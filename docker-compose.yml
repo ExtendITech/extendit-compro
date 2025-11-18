@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  extendit-compro:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: extendit-compro
+    ports:
+      - "4173:4173"
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+    networks:
+      - extendit-compro-network
+
+networks:
+  extendit-compro-network:
+    driver: bridge
