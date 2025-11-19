@@ -3,7 +3,7 @@
     "name": "IDE Dark - Extend IT",
     "description": "Terminal and code editor inspired dark theme with electric blue and neon green accents",
     "version": "1.0.0",
-    
+
     "fonts": {
       "primary": "JetBrains Mono",
       "fallback": "monospace",
@@ -30,7 +30,7 @@
           "description": "Light cyan for readability"
         },
         "accent": {
-          "primary": "hsl(187, 100%, 50%)",
+          "primary": "hsl(142, 100%, 50%)",
           "primaryName": "Electric Blue",
           "primaryUse": "Main brand color, CTAs, primary actions, glow effects",
           "secondary": "hsl(142, 100%, 50%)",
@@ -55,13 +55,13 @@
       },
 
       "gradients": {
-        "holographic": "linear-gradient(90deg, hsl(187, 100%, 50%) 0%, hsl(142, 100%, 50%) 50%, hsl(187, 100%, 50%) 100%)",
+        "holographic": "linear-gradient(90deg, hsl(142, 100%, 50%) 0%, hsl(142, 100%, 50%) 50%, hsl(142, 100%, 50%) 100%)",
         "background": "linear-gradient(to bottom, transparent, rgba(10, 10, 15, 0.5), rgba(10, 10, 15, 1))",
         "muted": "linear-gradient(to bottom, transparent, hsl(240, 6%, 12%, 0.2))"
       },
 
       "shadows": {
-        "glowPrimary": "0 0 20px hsl(187, 100%, 50%, 0.3), 0 0 40px hsl(187, 100%, 50%, 0.1)",
+        "glowPrimary": "0 0 20px hsl(142, 100%, 50%, 0.3), 0 0 40px hsl(142, 100%, 50%, 0.1)",
         "glowSecondary": "0 0 20px hsl(142, 100%, 50%, 0.3), 0 0 40px hsl(142, 100%, 50%, 0.1)",
         "card": "0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)"
       },
@@ -91,7 +91,7 @@
         "snappy": "cubic-bezier(0.4, 0, 0.6, 1)",
         "elastic": "cubic-bezier(0.68, -0.55, 0.265, 1.55)"
       },
-      
+
       "durations": {
         "fast": "0.15s",
         "normal": "0.3s",
@@ -221,14 +221,14 @@
       "cssVariables": {
         "--background": "240 10% 4%",
         "--foreground": "180 100% 90%",
-        "--primary": "187 100% 50%",
+        "--primary": "142 100% 50%",
         "--secondary": "142 100% 50%",
         "--accent": "28 100% 70%",
         "--muted": "240 6% 12%",
         "--border": "240 6% 15%",
         "--terminal-bg": "240 10% 3%",
         "--terminal-text": "142 100% 70%",
-        "--glow-primary": "187 100% 50%",
+        "--glow-primary": "142 100% 50%",
         "--glow-secondary": "142 100% 50%",
         "--radius": "0.25rem"
       }
