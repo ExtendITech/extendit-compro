@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { BookOpen, Calculator, Code2, Cpu, ExternalLink, Github, Mail, Palette, TrendingUp } from "lucide-react";
+import { BookOpen, Calculator, Camera, Code2, Cpu, ExternalLink, Github, Mail, Palette, TrendingUp } from "lucide-react";
 import { useState } from "react";
 import { BudgetEstimator } from "@/components/BudgetEstimator";
 import { CodeBackground } from "@/components/CodeBackground";
@@ -76,6 +76,18 @@ const Index = () => {
 			githubUrl: "#",
 			image: "/mailcast.png",
 			gradient: "from-orange-500/20 to-amber-500/20",
+		},
+		{
+			icon: Camera,
+			name: "Safe-Eat",
+			description:
+				"AI-powered food detection camera that identifies products and categorizes them by processing level using NOVA classification. Helps families avoid Ultra-Processed Foods (UPF) with real-time camera detection, health scoring, and mobile-first design. Created to help manage H. Pylori and dietary restrictions.",
+			technologies: ["React", "TypeScript", "Vite", "OpenRouter", "GPT-4 Vision", "TailwindCSS"],
+			category: "Health + AI",
+			projectUrl: "#",
+			githubUrl: "#",
+			image: "/safe-eat.PNG",
+			gradient: "from-green-500/20 to-emerald-500/20",
 		},
 		{
 			icon: BookOpen,
@@ -372,34 +384,34 @@ const Index = () => {
 								viewport={{ once: true }}
 								transition={{ duration: 0.5, delay: index * 0.1 }}
 							>
-						<Card className="p-0 h-full bg-card/50 backdrop-blur-sm border-border hover:border-primary/50 transition-all duration-300 hover:box-glow-primary group overflow-hidden">
-							{/* Image/Visual area */}
-							<div className={`aspect-video relative overflow-hidden ${project.image ? 'bg-background' : `bg-gradient-to-br ${project.gradient}`}`}>
-								{project.image ? (
-									<>
-										<img 
-											src={project.image} 
-											alt={project.name}
-											className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-										/>
-										<div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent" />
-									</>
-								) : (
-									<>
-										<div className="absolute inset-0 flex items-center justify-center">
-											<div className="w-20 h-20 rounded-xl bg-background/80 backdrop-blur-sm flex items-center justify-center border border-border group-hover:scale-110 transition-transform duration-300">
-												<project.icon className="w-10 h-10 text-primary" />
-											</div>
+								<Card className="p-0 h-full bg-card/50 backdrop-blur-sm border-border hover:border-primary/50 transition-all duration-300 hover:box-glow-primary group overflow-hidden">
+									{/* Image/Visual area */}
+									<div className={`aspect-video relative overflow-hidden ${project.image ? 'bg-background' : `bg-gradient-to-br ${project.gradient}`}`}>
+										{project.image ? (
+											<>
+												<img
+													src={project.image}
+													alt={project.name}
+													className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+												/>
+												<div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent" />
+											</>
+										) : (
+											<>
+												<div className="absolute inset-0 flex items-center justify-center">
+													<div className="w-20 h-20 rounded-xl bg-background/80 backdrop-blur-sm flex items-center justify-center border border-border group-hover:scale-110 transition-transform duration-300">
+														<project.icon className="w-10 h-10 text-primary" />
+													</div>
+												</div>
+												<div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent" />
+											</>
+										)}
+										<div className="absolute top-4 right-4">
+											<span className="text-xs px-3 py-1 bg-background/80 backdrop-blur-sm border border-primary/30 rounded-full font-mono text-primary">
+												{project.category}
+											</span>
 										</div>
-										<div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent" />
-									</>
-								)}
-								<div className="absolute top-4 right-4">
-									<span className="text-xs px-3 py-1 bg-background/80 backdrop-blur-sm border border-primary/30 rounded-full font-mono text-primary">
-										{project.category}
-									</span>
-								</div>
-							</div>									{/* Content */}
+									</div>									{/* Content */}
 									<div className="p-6">
 										<h3 className="text-2xl font-bold mb-3 group-hover:text-primary transition-colors">
 											{project.name}
