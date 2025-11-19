@@ -6,6 +6,7 @@ import { CodeBackground } from "@/components/CodeBackground";
 import { TerminalOverlay } from "@/components/TerminalOverlay";
 import { ThreeCanvas } from "@/components/ThreeCanvas";
 import { Button } from "@/components/ui/button";
+import { Logo } from "@/components/Logo";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -117,9 +118,7 @@ const Index = () => {
 				<div className="max-w-7xl mx-auto px-4 py-3">
 					<div className="flex items-center justify-between">
 						<div className="flex items-center gap-2 font-mono">
-							<span className="text-primary glow-primary text-xl font-bold">
-								{"<Extend IT />"}
-							</span>
+							<Logo className="h-6" />
 							<span className="text-xs text-muted-foreground hidden md:inline">
 								~/projects/digital-future
 							</span>
