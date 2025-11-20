@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Calculator, Code2, Cpu, Palette, TrendingUp } from "lucide-react";
+import { BookOpen, Calculator, Camera, Code2, Cpu, ExternalLink, Github, Mail, Palette, TrendingUp } from "lucide-react";
 import { useState } from "react";
 import { BudgetEstimator } from "@/components/BudgetEstimator";
 import { CodeBackground } from "@/components/CodeBackground";
@@ -62,6 +62,44 @@ const Index = () => {
 		{ name: "DataSync", logo: "DS" },
 		{ name: "DevOps Pro", logo: "DP" },
 		{ name: "CodeLabs", logo: "CL" },
+	];
+
+	const portfolio = [
+		{
+			icon: Mail,
+			name: "MailCast",
+			description:
+				"AI-powered email digest that automatically summarizes your inbox, solving the hundred unread emails problem. Transforms boring emails into engaging content with sarcastic and personalized tone. Features Gemini TTS for audio reading and mobile-friendly design for reading on the go.",
+			technologies: ["Vite", "Gemini", "Vertex", "Langchain", "AWS SES"],
+			category: "AI + Productivity",
+			projectUrl: "#",
+			githubUrl: "#",
+			image: "/mailcast.png",
+			gradient: "from-orange-500/20 to-amber-500/20",
+		},
+		{
+			icon: Camera,
+			name: "Safe-Eat",
+			description:
+				"AI-powered food detection camera that identifies products and categorizes them by processing level using NOVA classification. Helps families avoid Ultra-Processed Foods (UPF) with real-time camera detection, health scoring, and mobile-first design. Created to help manage H. Pylori and dietary restrictions.",
+			technologies: ["React", "TypeScript", "Vite", "OpenRouter", "GPT-4 Vision", "TailwindCSS"],
+			category: "Health + AI",
+			projectUrl: "#",
+			githubUrl: "#",
+			image: "/safe-eat.PNG",
+			gradient: "from-green-500/20 to-emerald-500/20",
+		},
+		{
+			icon: BookOpen,
+			name: "TechHub",
+			description:
+				"Comprehensive platform for tech enthusiasts. Real-time collaboration, code sharing, and community-driven knowledge base.",
+			technologies: ["Next.js", "Node.js", "MongoDB", "Socket.io", "AWS"],
+			category: "SaaS Platform",
+			projectUrl: "#",
+			githubUrl: "#",
+			gradient: "from-blue-500/20 to-cyan-500/20",
+		},
 	];
 
 	const handleSubmit = (e: React.FormEvent) => {
@@ -306,6 +344,116 @@ const Index = () => {
 										</div>
 										<div className="text-xs text-muted-foreground">
 											{partner.name}
+										</div>
+									</div>
+								</Card>
+							</motion.div>
+						))}
+					</div>
+				</div>
+			</section>
+
+			{/* Portfolio Section */}
+			<section className="relative py-20 px-4">
+				<div className="max-w-7xl mx-auto">
+					<motion.div
+						initial={{ opacity: 0, y: 20 }}
+						whileInView={{ opacity: 1, y: 0 }}
+						viewport={{ once: true }}
+						transition={{ duration: 0.6 }}
+						className="mb-12"
+					>
+						<span className="text-primary font-mono text-sm glow-primary">
+							$ ls portfolio/
+						</span>
+						<h2 className="text-3xl md:text-4xl font-bold mt-2 mb-4">
+							Featured{" "}
+							<span className="text-secondary glow-secondary">Projects</span>
+						</h2>
+						<p className="text-muted-foreground max-w-2xl">
+							Showcase of our latest work and innovative solutions.
+						</p>
+					</motion.div>
+
+					<div className="grid md:grid-cols-2 gap-8">
+						{portfolio.map((project, index) => (
+							<motion.div
+								key={index}
+								initial={{ opacity: 0, y: 20 }}
+								whileInView={{ opacity: 1, y: 0 }}
+								viewport={{ once: true }}
+								transition={{ duration: 0.5, delay: index * 0.1 }}
+							>
+								<Card className="p-0 h-full bg-card/50 backdrop-blur-sm border-border hover:border-primary/50 transition-all duration-300 hover:box-glow-primary group overflow-hidden">
+									{/* Image/Visual area */}
+									<div className={`aspect-video relative overflow-hidden ${project.image ? 'bg-background' : `bg-gradient-to-br ${project.gradient}`}`}>
+										{project.image ? (
+											<>
+												<img
+													src={project.image}
+													alt={project.name}
+													className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+												/>
+												<div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent" />
+											</>
+										) : (
+											<>
+												<div className="absolute inset-0 flex items-center justify-center">
+													<div className="w-20 h-20 rounded-xl bg-background/80 backdrop-blur-sm flex items-center justify-center border border-border group-hover:scale-110 transition-transform duration-300">
+														<project.icon className="w-10 h-10 text-primary" />
+													</div>
+												</div>
+												<div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent" />
+											</>
+										)}
+										<div className="absolute top-4 right-4">
+											<span className="text-xs px-3 py-1 bg-background/80 backdrop-blur-sm border border-primary/30 rounded-full font-mono text-primary">
+												{project.category}
+											</span>
+										</div>
+									</div>									{/* Content */}
+									<div className="p-6">
+										<h3 className="text-2xl font-bold mb-3 group-hover:text-primary transition-colors">
+											{project.name}
+										</h3>
+										<p className="text-muted-foreground mb-4 text-sm leading-relaxed">
+											{project.description}
+										</p>
+
+										{/* Technologies */}
+										<div className="flex flex-wrap gap-2 mb-6">
+											{project.technologies.map((tech, i) => (
+												<span
+													key={i}
+													className="text-xs px-2 py-1 bg-muted rounded font-mono text-muted-foreground"
+												>
+													{tech}
+												</span>
+											))}
+										</div>
+
+										{/* Action Buttons */}
+										<div className="flex gap-3">
+											<Button
+												size="sm"
+												className="flex-1 bg-primary text-primary-foreground hover:bg-primary/90 glow-primary"
+												asChild
+											>
+												<a href={project.projectUrl} target="_blank" rel="noopener noreferrer">
+													<ExternalLink className="w-4 h-4 mr-2" />
+													View Project
+												</a>
+											</Button>
+											<Button
+												size="sm"
+												variant="outline"
+												className="border-primary/30 text-primary hover:bg-primary/10"
+												asChild
+											>
+												<a href={project.githubUrl} target="_blank" rel="noopener noreferrer">
+													<Github className="w-4 h-4" />
+												</a>
+											</Button>
 										</div>
 									</div>
 								</Card>
