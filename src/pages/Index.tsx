@@ -64,12 +64,21 @@ const Index = () => {
 	];
 
 	const partners = [
-		{ name: "TechCorp", logo: "TC" },
-		{ name: "InnovateAI", logo: "IA" },
-		{ name: "CloudFlow", logo: "CF" },
-		{ name: "DataSync", logo: "DS" },
-		{ name: "DevOps Pro", logo: "DP" },
-		{ name: "CodeLabs", logo: "CL" },
+		{
+			name: "ATF",
+			logo: "/clients/ATF(Advanced Technology Facility).png",
+		},
+		{ name: "Akar Partner", logo: "/clients/Akar Partner.png" },
+		{ name: "Anima Foundry", logo: "/clients/Anima Foundry.png" },
+		{ name: "Bumi Kinar", logo: "/clients/Bumi Kinar.png" },
+		{ name: "Dillco Chocolate", logo: "/clients/Dillco Chocolate.jpeg" },
+		{ name: "Huawei", logo: "/clients/Huawei.png" },
+		{ name: "Kata Boost", logo: "/clients/Kata Boost.png" },
+		{ name: "Kata Consulting", logo: "/clients/Kata Consulting.png" },
+		{ name: "Mierakigai", logo: "/clients/Mierakigai.png" },
+		{ name: "Nomad Fight Club", logo: "/clients/Nomad Fight Club.png" },
+		{ name: "Restart Co", logo: "/clients/Restart Co.png" },
+		{ name: "Vinfast", logo: "/clients/Vinfast.png" },
 	];
 
 	const portfolio = portfolioData?.map((item) => ({
@@ -99,7 +108,7 @@ const Index = () => {
 				<div className="max-w-7xl mx-auto px-4 py-3">
 					<div className="flex items-center justify-between">
 						<div className="flex items-center gap-2 font-mono">
-							<Logo className="h-6" />
+							<Logo className="h-10" />
 							<span className="text-xs text-muted-foreground hidden md:inline">
 								~/projects/digital-future
 							</span>
@@ -131,7 +140,7 @@ const Index = () => {
 					<div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/50 to-background" />
 				</div>
 
-				<div className="relative z-10 max-w-7xl mx-auto grid lg:grid-cols-2 gap-8 items-center">
+				<div className="relative z-10 max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
 					<motion.div
 						initial={{ opacity: 0, x: -50 }}
 						animate={{ opacity: 1, x: 0 }}
@@ -308,7 +317,7 @@ const Index = () => {
 						</h2>
 					</motion.div>
 
-					<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+					<div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-16 items-center">
 						{partners.map((partner, index) => (
 							<motion.div
 								key={index}
@@ -316,17 +325,13 @@ const Index = () => {
 								whileInView={{ opacity: 1, scale: 1 }}
 								viewport={{ once: true }}
 								transition={{ duration: 0.4, delay: index * 0.05 }}
+								className="flex justify-center"
 							>
-								<Card className="aspect-square flex items-center justify-center bg-card/30 backdrop-blur-sm border-border hover:border-primary/50 transition-all duration-300 hover:box-glow-primary cursor-pointer">
-									<div className="text-center">
-										<div className="text-2xl font-bold text-primary mb-1">
-											{partner.logo}
-										</div>
-										<div className="text-xs text-muted-foreground">
-											{partner.name}
-										</div>
-									</div>
-								</Card>
+								<img
+									src={partner.logo}
+									alt={partner.name}
+									className="h-24 w-auto object-contain"
+								/>
 							</motion.div>
 						))}
 					</div>

@@ -116,6 +116,10 @@ All colors MUST be HSL.
     --sidebar-primary: 142 70% 45%;
     --sidebar-ring: 142 70% 45%;
   }
+
+  .theme-apple {
+    --radius: 1.5rem;
+  }
 }
 
 @layer base {
