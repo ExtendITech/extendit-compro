@@ -1,6 +1,8 @@
 import { motion } from "framer-motion";
 import { BookOpen, Calculator, Camera, Code2, Cpu, ExternalLink, Github, Mail, Palette, TrendingUp } from "lucide-react";
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { fetchPortfolio, STRAPI_URL } from "@/lib/api";
 import { BudgetEstimator } from "@/components/BudgetEstimator";
 import { CodeBackground } from "@/components/CodeBackground";
 import { TerminalOverlay } from "@/components/TerminalOverlay";
@@ -15,6 +17,11 @@ const Index = () => {
 		name: "",
 		email: "",
 		message: "",
+	});
+
+	const { data: portfolioData, isLoading } = useQuery({
+		queryKey: ["portfolio"],
+		queryFn: fetchPortfolio,
 	});
 
 	const services = [
@@ -64,43 +71,17 @@ const Index = () => {
 		{ name: "CodeLabs", logo: "CL" },
 	];
 
-	const portfolio = [
-		{
-			icon: Mail,
-			name: "MailCast",
-			description:
-				"AI-powered email digest that automatically summarizes your inbox, solving the hundred unread emails problem. Transforms boring emails into engaging content with sarcastic and personalized tone. Features Gemini TTS for audio reading and mobile-friendly design for reading on the go.",
-			technologies: ["Vite", "Gemini", "Vertex", "Langchain", "AWS SES"],
-			category: "AI + Productivity",
-			projectUrl: "#",
-			githubUrl: "#",
-			image: "/mailcast.png",
-			gradient: "from-orange-500/20 to-amber-500/20",
-		},
-		{
-			icon: Camera,
-			name: "Safe-Eat",
-			description:
-				"AI-powered food detection camera that identifies products and categorizes them by processing level using NOVA classification. Helps families avoid Ultra-Processed Foods (UPF) with real-time camera detection, health scoring, and mobile-first design. Created to help manage H. Pylori and dietary restrictions.",
-			technologies: ["React", "TypeScript", "Vite", "OpenRouter", "GPT-4 Vision", "TailwindCSS"],
-			category: "Health + AI",
-			projectUrl: "#",
-			githubUrl: "#",
-			image: "/safe-eat.PNG",
-			gradient: "from-green-500/20 to-emerald-500/20",
-		},
-		{
-			icon: BookOpen,
-			name: "TechHub",
-			description:
-				"Comprehensive platform for tech enthusiasts. Real-time collaboration, code sharing, and community-driven knowledge base.",
-			technologies: ["Next.js", "Node.js", "MongoDB", "Socket.io", "AWS"],
-			category: "SaaS Platform",
-			projectUrl: "#",
-			githubUrl: "#",
-			gradient: "from-blue-500/20 to-cyan-500/20",
-		},
-	];
+	const portfolio = portfolioData?.map((item) => ({
+		icon: Code2,
+		name: item.title,
+		description: item.description,
+		technologies: Array.isArray(item.techStack) ? item.techStack : [],
+		category: item.category,
+		projectUrl: item.projectLink,
+		githubUrl: item.githubLink,
+		image: item.image ? `${STRAPI_URL}${item.image.url}` : null,
+		gradient: item.fallbackGradient || "from-blue-500/20 to-cyan-500/20",
+	})) || [];
 
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
