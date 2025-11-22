@@ -1,3 +1,4 @@
+import Tilt from "react-parallax-tilt";
 import { motion } from "framer-motion";
 import { BookOpen, Calculator, Camera, Code2, Cpu, ExternalLink, Github, Mail, Palette, TrendingUp } from "lucide-react";
 import { useState } from "react";
@@ -317,7 +318,7 @@ const Index = () => {
 						</h2>
 					</motion.div>
 
-					<div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-16 items-center">
+					<div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-8">
 						{partners.map((partner, index) => (
 							<motion.div
 								key={index}
@@ -325,13 +326,22 @@ const Index = () => {
 								whileInView={{ opacity: 1, scale: 1 }}
 								viewport={{ once: true }}
 								transition={{ duration: 0.4, delay: index * 0.05 }}
-								className="flex justify-center"
 							>
-								<img
-									src={partner.logo}
-									alt={partner.name}
-									className="h-24 w-auto object-contain"
-								/>
+								<Tilt
+									tiltMaxAngleX={10}
+									tiltMaxAngleY={10}
+									perspective={1000}
+									scale={1.05}
+									className="h-full"
+								>
+									<div className="h-40 flex items-center justify-center p-6 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 hover:border-primary/50 hover:bg-white/10 transition-all duration-300 group cursor-pointer">
+										<img
+											src={partner.logo}
+											alt={partner.name}
+											className="max-h-full max-w-full object-contain grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300 filter"
+										/>
+									</div>
+								</Tilt>
 							</motion.div>
 						))}
 					</div>
