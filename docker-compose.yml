@@ -11,6 +11,7 @@ services:
     restart: unless-stopped
     environment:
       - NODE_ENV=production
+      - VITE_STRAPI_URL=https://strapi.extend-it.dev
     networks:
       - extendit-compro-network
 
