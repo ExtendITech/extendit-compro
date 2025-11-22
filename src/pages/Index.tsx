@@ -108,7 +108,7 @@ const Index = () => {
 				<div className="max-w-7xl mx-auto px-4 py-3">
 					<div className="flex items-center justify-between">
 						<div className="flex items-center gap-2 font-mono">
-							<Logo className="h-10" />
+							<Logo className="h-16" />
 							<span className="text-xs text-muted-foreground hidden md:inline">
 								~/projects/digital-future
 							</span>
