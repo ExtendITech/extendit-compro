@@ -67,19 +67,19 @@ const Index = () => {
 	const partners = [
 		{
 			name: "ATF",
-			logo: "/clients/ATF(Advanced Technology Facility).png",
+			logo: "/clients/atf-logo.webp",
 		},
-		{ name: "Akar Partner", logo: "/clients/Akar Partner.png" },
-		{ name: "Anima Foundry", logo: "/clients/Anima Foundry.png" },
-		{ name: "Bumi Kinar", logo: "/clients/Bumi Kinar.png" },
-		{ name: "Dillco Chocolate", logo: "/clients/Dillco Chocolate.jpeg" },
-		{ name: "Huawei", logo: "/clients/Huawei.png" },
-		{ name: "Kata Boost", logo: "/clients/Kata Boost.png" },
-		{ name: "Kata Consulting", logo: "/clients/Kata Consulting.png" },
-		{ name: "Mierakigai", logo: "/clients/Mierakigai.png" },
-		{ name: "Nomad Fight Club", logo: "/clients/Nomad Fight Club.png" },
-		{ name: "Restart Co", logo: "/clients/Restart Co.png" },
-		{ name: "Vinfast", logo: "/clients/Vinfast.png" },
+		{ name: "Akar Partner", logo: "/clients/akar-partner-logo.webp" },
+		{ name: "Anima Foundry", logo: "/clients/anima-foundry-logo.webp" },
+		{ name: "Bumi Kinar", logo: "/clients/bumi-kinar-logo.webp" },
+		{ name: "Dillco Chocolate", logo: "/clients/dillco-chocolate-logo.webp" },
+		{ name: "Huawei", logo: "/clients/huawei-logo.webp" },
+		{ name: "Kata Boost", logo: "/clients/kataboost-klogo.webp" },
+		{ name: "Kata Consulting", logo: "/clients/kata-consulting-logo.webp" },
+		{ name: "Mierakigai", logo: "/clients/mierakigai-logo.webp" },
+		{ name: "Nomad Fight Club", logo: "/clients/nomad-fight-club.webp" },
+		{ name: "Restart Co", logo: "/clients/restart-co.webp" },
+		{ name: "Vinfast", logo: "/clients/vinfast-indo-logo.webp" },
 	];
 
 	const portfolio = portfolioData?.map((item) => ({

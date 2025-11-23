@@ -9,22 +9,26 @@ Extend IT is a dynamic tech company providing software solutions, AI integration
 The existing website features:
 
 - **Hero Section**: "Architects of the Digital Future" with 3D elements and terminal aesthetics.
+- **Theme**: Rebranded to **Green** (previously Blue) to align with new identity.
 - **Services**: Tech Solution, AI Solution, Product & Design, Performance Marketing.
-- **Trusted Partners**: Grid display of client logos.
-- **Current Estimator**: Basic calculator based on Project Type (Website, Mobile, API, AI), Complexity, and Integrations.
-- **Contact Form**: Standard name, email, message fields.
+- **Trusted Partners**: Grid display of client logos (UI improvements in progress).
+- **Portfolio**: Showcase of recent projects.
+- **CMS**: Integrated **Strapi** for content management.
+- **Experimental Pages**: Added `/apple` route for testing rounded button aesthetics.
+- **Current Estimator**: Basic calculator based on Project Type.
 
 ## 3. New Business Requirements
 
 ### 3.1 Service Packages
 
-The website must explicitly display three distinct service tiers to guide potential clients:
+The website must explicitly display the following core service pillars:
 
-| Package | Name                 | Price (IDR) | Delivery Time | Description                                                                                 |
-| :------ | :------------------- | :---------- | :------------ | :------------------------------------------------------------------------------------------ |
-| **A**   | **Static Website**   | 3,000,000   | 3-5 Days      | Ideal for landing pages, portfolios, and simple company profiles. No backend required.      |
-| **B**   | **Website + Admin**  | 6,000,000   | 7-9 Days      | Includes a Content Management System (CMS) or Admin Dashboard for content updates.          |
-| **C**   | **Dynamic / Custom** | Custom      | Discuss       | For complex requirements, SaaS, or unique business logic. Triggers the "Project Estimator". |
+| Package | Name                  | Description                                                       |
+| :------ | :-------------------- | :---------------------------------------------------------------- |
+| **1**   | **Web Static**        | Ideal for landing pages, portfolios, and simple company profiles. |
+| **2**   | **Web Dynamic + CMS** | Includes Strapi CMS for content updates.                          |
+| **3**   | **Company Starter**   | Comprehensive solutions including Finance and HR systems.         |
+| **4**   | **AI Solution**       | Custom AI implementations (Requires detailed consultation).       |
 
 ### 3.2 Enhanced Project Estimator
 
@@ -63,3 +67,24 @@ The current estimator needs to be replaced or significantly modified to serve as
 ## 5. Strategic Opportunities (Leveraging the Team)
 
 _See discussion below for detailed ideas on leveraging the software team._
+
+## 6. Project Roadmap & Implementation Status
+
+### Phase 1: Foundation & Development (Current)
+
+1.  **Develop Template**: ✅ Done
+2.  **Section Planning**: ✅ Done (Included Logo)
+3.  **Infrastructure**: ✅ Done (Dockerized)
+4.  **Portfolio Section**: ✅ Done
+5.  **Trusted Partners**: 🚧 In Progress (Finalizing UI/UX)
+6.  **CMS Integration**: ✅ Done (Strapi)
+7.  **UI Experiments**: ✅ Done (Added `/apple` page for rounded button styling)
+8.  **Rebranding**: ✅ Done (Switched primary theme from Blue to Green)
+9.  **Service Definition**: 🚧 In Progress (Defining packages: Web Static, Web Dynamic, Company Starter, AI Solution)
+
+### Phase 2: Launch & Growth (Post-Launch)
+
+1.  **Social Media**: Setup accounts and branding.
+2.  **SEO & AIO**: Search Engine Optimization and AI Optimization (for learning purposes).
+3.  **Digital Presence**: Linktree creation.
+4.  **Feature Enhancement**: Budget Estimator improvements.
