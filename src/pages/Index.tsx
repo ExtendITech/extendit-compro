@@ -82,6 +82,9 @@ const Index = () => {
 		{ name: "Vinfast", logo: "/clients/vinfast-indo-logo.webp" },
 	];
 
+	const firstRow = partners.slice(0, Math.ceil(partners.length / 2));
+	const secondRow = partners.slice(Math.ceil(partners.length / 2));
+
 	const portfolio = portfolioData?.map((item) => ({
 		icon: Code2,
 		name: item.title,
@@ -318,32 +321,80 @@ const Index = () => {
 						</h2>
 					</motion.div>
 
-					<div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-8">
-						{partners.map((partner, index) => (
+					<div className="relative w-full overflow-hidden space-y-0 py-12">
+						{/* Row 1: Walks to Right */}
+						<div className="flex w-full overflow-hidden mask-gradient-x py-6">
 							<motion.div
-								key={index}
-								initial={{ opacity: 0, scale: 0.8 }}
-								whileInView={{ opacity: 1, scale: 1 }}
-								viewport={{ once: true }}
-								transition={{ duration: 0.4, delay: index * 0.05 }}
+								className="flex gap-8 items-center whitespace-nowrap"
+								animate={{ x: ["-50%", "0%"] }}
+								transition={{
+									repeat: Infinity,
+									duration: 100,
+									ease: "linear",
+								}}
 							>
-								<Tilt
-									tiltMaxAngleX={10}
-									tiltMaxAngleY={10}
-									perspective={1000}
-									scale={1.05}
-									className="h-full"
-								>
-									<div className="h-40 flex items-center justify-center p-6 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 hover:border-primary/50 hover:bg-white/10 transition-all duration-300 group cursor-pointer">
-										<img
-											src={partner.logo}
-											alt={partner.name}
-											className="max-h-full max-w-full object-contain grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300 filter"
-										/>
+								{[...firstRow, ...firstRow, ...firstRow, ...firstRow].map((partner, index) => (
+									<div key={`row1-${index}`} className="w-[200px] flex-shrink-0">
+										<Tilt
+											tiltMaxAngleX={10}
+											tiltMaxAngleY={10}
+											perspective={1000}
+											scale={1.05}
+											className="h-full"
+										>
+											<div className="relative h-32 flex items-center justify-center p-6 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 group cursor-pointer overflow-hidden">
+												{/* Neon Circuit Effect */}
+												<div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/20 to-transparent translate-x-[-100%] group-hover:animate-shimmer" />
+												<div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 border-2 border-primary/50 rounded-xl box-glow-primary" />
+												
+												<img
+													src={partner.logo}
+													alt={partner.name}
+													className="max-h-full max-w-full object-contain grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300 filter relative z-10"
+												/>
+											</div>
+										</Tilt>
 									</div>
-								</Tilt>
+								))}
 							</motion.div>
-						))}
+						</div>
+
+						{/* Row 2: Walks to Left */}
+						<div className="flex w-full overflow-hidden mask-gradient-x py-6">
+							<motion.div
+								className="flex gap-8 items-center whitespace-nowrap"
+								animate={{ x: ["0%", "-50%"] }}
+								transition={{
+									repeat: Infinity,
+									duration: 100,
+									ease: "linear",
+								}}
+							>
+								{[...secondRow, ...secondRow, ...secondRow, ...secondRow].map((partner, index) => (
+									<div key={`row2-${index}`} className="w-[200px] flex-shrink-0">
+										<Tilt
+											tiltMaxAngleX={10}
+											tiltMaxAngleY={10}
+											perspective={1000}
+											scale={1.05}
+											className="h-full"
+										>
+											<div className="relative h-32 flex items-center justify-center p-6 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 group cursor-pointer overflow-hidden">
+												{/* Neon Circuit Effect */}
+												<div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/20 to-transparent translate-x-[-100%] group-hover:animate-shimmer" />
+												<div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 border-2 border-primary/50 rounded-xl box-glow-primary" />
+
+												<img
+													src={partner.logo}
+													alt={partner.name}
+													className="max-h-full max-w-full object-contain grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300 filter relative z-10"
+												/>
+											</div>
+										</Tilt>
+									</div>
+								))}
+							</motion.div>
+						</div>
 					</div>
 				</div>
 			</section>
