@@ -1,4 +1,4 @@
-export const STRAPI_URL = import.meta.env.VITE_STRAPI_URL || 'http://localhost:1337';
+export const STRAPI_URL = import.meta.env.VITE_STRAPI_URL || 'https://strapi.extend-it.dev';
 
 export interface PortfolioItem {
     id: number;
