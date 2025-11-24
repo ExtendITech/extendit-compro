@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { BookOpen, Calculator, Camera, Code2, Cpu, ExternalLink, Github, Mail, Palette, TrendingUp } from "lucide-react";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { fetchPortfolio, STRAPI_URL } from "@/lib/api";
+import { fetchPortfolio, fetchPartners, STRAPI_URL } from "@/lib/api";
 import { BudgetEstimator } from "@/components/BudgetEstimator";
 import { CodeBackground } from "@/components/CodeBackground";
 import { TerminalOverlay } from "@/components/TerminalOverlay";
@@ -24,6 +24,11 @@ const Index = () => {
 	const { data: portfolioData, isLoading } = useQuery({
 		queryKey: ["portfolio"],
 		queryFn: fetchPortfolio,
+	});
+
+	const { data: partnersData } = useQuery({
+		queryKey: ["partners"],
+		queryFn: fetchPartners,
 	});
 
 	const services = [
@@ -64,7 +69,10 @@ const Index = () => {
 		},
 	];
 
-	const partners = [
+	const partners = partnersData?.map((item) => ({
+		name: item.name,
+		logo: item.image ? `${STRAPI_URL}${item.image.url}` : "",
+	})) || [
 		{
 			name: "ATF",
 			logo: "/clients/atf-logo.webp",
