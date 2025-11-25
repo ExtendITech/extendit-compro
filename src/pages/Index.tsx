@@ -156,7 +156,7 @@ const Index = () => {
 								className="bg-primary text-primary-foreground hover:bg-primary/90 glow-primary"
 								onClick={() => scrollToSection("contact")}
 							>
-								{">"} Get Started
+								Get Started
 							</Button>
 						</div>
 					</div>
@@ -393,7 +393,7 @@ const Index = () => {
 								}}
 							>
 								{[...firstRow, ...firstRow, ...firstRow, ...firstRow].map((partner, index) => (
-									<div key={`row1-${index}`} className="w-[200px] flex-shrink-0">
+									<div key={`row1-${index}`} className="w-[240px] flex-shrink-0">
 										<Tilt
 											tiltMaxAngleX={10}
 											tiltMaxAngleY={10}
@@ -401,7 +401,7 @@ const Index = () => {
 											scale={1.05}
 											className="h-full"
 										>
-											<div className="relative h-32 flex items-center justify-center p-6 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 group cursor-pointer overflow-hidden">
+											<div className="relative h-40 flex items-center justify-center p-8 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 group cursor-pointer overflow-hidden">
 												{/* Neon Circuit Effect */}
 												<div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/20 to-transparent translate-x-[-100%] group-hover:animate-shimmer" />
 												<div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 border-2 border-primary/50 rounded-xl box-glow-primary" />
@@ -430,7 +430,7 @@ const Index = () => {
 								}}
 							>
 								{[...secondRow, ...secondRow, ...secondRow, ...secondRow].map((partner, index) => (
-									<div key={`row2-${index}`} className="w-[200px] flex-shrink-0">
+									<div key={`row2-${index}`} className="w-[240px] flex-shrink-0">
 										<Tilt
 											tiltMaxAngleX={10}
 											tiltMaxAngleY={10}
@@ -438,7 +438,7 @@ const Index = () => {
 											scale={1.05}
 											className="h-full"
 										>
-											<div className="relative h-32 flex items-center justify-center p-6 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 group cursor-pointer overflow-hidden">
+											<div className="relative h-40 flex items-center justify-center p-8 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 group cursor-pointer overflow-hidden">
 												{/* Neon Circuit Effect */}
 												<div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/20 to-transparent translate-x-[-100%] group-hover:animate-shimmer" />
 												<div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 border-2 border-primary/50 rounded-xl box-glow-primary" />
