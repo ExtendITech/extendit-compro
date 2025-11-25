@@ -4,9 +4,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Index from "./pages/Index";
-import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
-import Apple from "./pages/Apple";
 
 const queryClient = new QueryClient();
 
@@ -17,8 +15,7 @@ const App = () => (
 			<Sonner />
 			<BrowserRouter>
 				<Routes>
-					<Route path="/" element={<Home />} />
-					<Route path="/apple" element={<Apple />} />
+					<Route path="/" element={<Index />} />
 					{/* Keep direct Index route for reference/testing */}
 					<Route path="/__index" element={<Index />} />
 					{/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
