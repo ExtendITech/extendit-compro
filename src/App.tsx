@@ -16,6 +16,8 @@ const App = () => (
 			<BrowserRouter>
 				<Routes>
 					<Route path="/" element={<Index />} />
+					{/* Keep direct Index route for reference/testing */}
+					<Route path="/__index" element={<Index />} />
 					{/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
 					<Route path="*" element={<NotFound />} />
 				</Routes>

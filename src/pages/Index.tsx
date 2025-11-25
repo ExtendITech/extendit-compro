@@ -1,75 +1,113 @@
+import Tilt from "react-parallax-tilt";
 import { motion } from "framer-motion";
-import { BookOpen, Calculator, Camera, Code2, Cpu, ExternalLink, Github, Mail, Palette, TrendingUp } from "lucide-react";
+import { BookOpen, Calculator, Camera, Code2, Cpu, ExternalLink, Github, Mail, Palette, TrendingUp, Instagram, Linkedin, Globe, Laptop } from "lucide-react";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { fetchPortfolio, STRAPI_URL } from "@/lib/api";
+import { fetchPortfolio, fetchPartners, STRAPI_URL } from "@/lib/api";
 import { BudgetEstimator } from "@/components/BudgetEstimator";
 import { CodeBackground } from "@/components/CodeBackground";
 import { TerminalOverlay } from "@/components/TerminalOverlay";
 import { ThreeCanvas } from "@/components/ThreeCanvas";
 import { Button } from "@/components/ui/button";
+import { Logo } from "@/components/Logo";
 import { Card } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+
+const industries = {
+	"Technology & Digital": ["Website Development", "Mobile App Development", "Software Development", "Digital Marketing", "SEO / SEM", "IT Services", "Cybersecurity", "Data & Analytics", "AI / Machine Learning", "Cloud Services"],
+	"Design & Creative": ["Graphic Design", "UI/UX Design", "Branding & Identity", "Motion Graphics", "Video Production", "Photography"],
+	"Business & Consulting": ["Business Consulting", "Finance & Accounting", "Legal Services", "HR & Recruitment", "Project Management", "Training & Education"],
+	"Retail & Hospitality": ["E-Commerce", "Food & Beverage", "Travel & Hospitality", "Fashion & Apparel", "Consumer Goods"],
+	"Industrial & Technical": ["Construction", "Architecture", "Engineering", "Manufacturing", "Automotive", "Energy & Utility"],
+	"Health & Social": ["Healthcare", "Medical Services", "Non-Profit / NGO", "Government & Public Sector"],
+	"Media & Communication": ["Advertising", "PR & Communications", "Journalism & Broadcasting"],
+	"Real Estate": ["Property Development", "Real Estate Agency"],
+	"Others": ["Other"]
+};
 
 const Index = () => {
 	const [formData, setFormData] = useState({
-		name: "",
-		email: "",
-		message: "",
+		category: "",
+		subCategory: "",
+		problem: "",
 	});
+
+	const scrollToSection = (id: string) => {
+		const element = document.getElementById(id);
+		if (element) {
+			element.scrollIntoView({ behavior: "smooth" });
+		}
+	};
 
 	const { data: portfolioData, isLoading } = useQuery({
 		queryKey: ["portfolio"],
 		queryFn: fetchPortfolio,
 	});
 
+	const { data: partnersData } = useQuery({
+		queryKey: ["partners"],
+		queryFn: fetchPartners,
+	});
+
 	const services = [
 		{
-			icon: Code2,
-			title: "Tech Solution",
+			icon: Globe,
+			title: "Simple Web App",
 			description:
-				"Custom software development with cutting-edge technologies. From web to mobile, we build scalable solutions.",
-			tags: ["React", "Node.js", "Cloud"],
+				"Fast, reliable static websites and simple CMS solutions. Perfect for portfolios, landing pages, and anyone who says “I just need something simple” (until they don’t).",
+			tagLabel: "Tech Stack:",
+			tags: ["Next.js", "React", "Headless CMS"],
+		},
+		{
+			icon: Laptop,
+			title: "Custom Web App",
+			description:
+				"Full-scale applications with real architecture — not the duct-taped backend your cousin’s freelancer made. Scalable, secure, and built to handle messy business logic you swear is “simple.”",
+			tagLabel: "Tech Stack:",
+			tags: ["Next.js", "Golang", "FastAPI", "Docker", "K8s"],
 		},
 		{
 			icon: Cpu,
-			title: "AI Solution",
+			title: "AI Solution / Automation",
 			description:
-				"Intelligent automation and machine learning integration. Transform your business with AI-powered insights.",
-			tags: ["ML", "NLP", "Automation"],
+				"Intelligent automation and machine learning that actually works — not the fake “AI inside” label people slap on spreadsheets. From simple bots to “holy shit this saves us 40 hours a week.”",
+			tagLabel: "Tech Stack:",
+			tags: ["ML", "NLP", "Automation", "Python"],
 		},
 		{
 			icon: Palette,
 			title: "Product & Design (UI/UX)",
 			description:
-				"Beautiful, intuitive interfaces that users love. Research-driven design that converts.",
+				"Interfaces so clean your users will think you hired a Silicon Valley studio. Research-driven, delightful, and not the “designer’s cousin’s opinion” type of design.",
+			tagLabel: "Tech Stack:",
 			tags: ["Figma", "Prototyping", "Testing"],
 		},
 		{
 			icon: TrendingUp,
 			title: "Performance Marketing",
 			description:
-				"Data-driven campaigns that drive real results. SEO, SEM, and growth hacking strategies.",
+				"Data-driven campaigns that produce real numbers — not “reach” and “impressions” your last agency tried to sell you. SEO, SEM, growth hacking… basically the stuff that actually moves revenue.",
+			tagLabel: "Tech Stack:",
 			tags: ["Analytics", "Growth", "ROI"],
 		},
 		{
 			icon: Calculator,
 			title: "Prompt & Budget Estimator",
 			description:
-				"Get instant project estimates and AI-powered prompts. Plan smarter, ship faster.",
-			tags: ["Estimation", "Planning", "Insights"],
+				"Instant project estimates and AI-powered prompts. Perfect for when you need a budget and a reality check — fast.",
+			tagLabel: "Tech Stack:",
+			tags: ["Smart Prompts", "Realistic Estimates", "Zero BS"],
 		},
 	];
 
-	const partners = [
-		{ name: "TechCorp", logo: "TC" },
-		{ name: "InnovateAI", logo: "IA" },
-		{ name: "CloudFlow", logo: "CF" },
-		{ name: "DataSync", logo: "DS" },
-		{ name: "DevOps Pro", logo: "DP" },
-		{ name: "CodeLabs", logo: "CL" },
-	];
+	const partners = partnersData?.map((item) => ({
+		name: item.name,
+		logo: item.image ? `${STRAPI_URL}${item.image.url}` : "",
+	})) || [];
+
+	const firstRow = partners.slice(0, Math.ceil(partners.length / 2));
+	const secondRow = partners.slice(Math.ceil(partners.length / 2));
 
 	const portfolio = portfolioData?.map((item) => ({
 		icon: Code2,
@@ -85,12 +123,13 @@ const Index = () => {
 
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
-		console.log("Form submitted:", formData);
-		// TODO: Connect to backend API
+		const message = `Hello Extend IT, I work in *${formData.category} - ${formData.subCategory}* and I have this problem: *${formData.problem}*`;
+		const encodedMessage = encodeURIComponent(message);
+		window.open(`https://wa.me/6287887755399?text=${encodedMessage}`, "_blank");
 	};
 
 	return (
-		<div className="relative min-h-screen bg-background text-foreground overflow-x-hidden">
+		<div className="relative min-h-screen bg-background text-foreground overflow-x-hidden theme-apple">
 			<CodeBackground />
 
 			{/* Navigation */}
@@ -98,9 +137,7 @@ const Index = () => {
 				<div className="max-w-7xl mx-auto px-4 py-3">
 					<div className="flex items-center justify-between">
 						<div className="flex items-center gap-2 font-mono">
-							<span className="text-primary glow-primary text-xl font-bold">
-								{"<Extend IT />"}
-							</span>
+							<Logo className="h-16 md:-ml-4" />
 							<span className="text-xs text-muted-foreground hidden md:inline">
 								~/projects/digital-future
 							</span>
@@ -117,8 +154,9 @@ const Index = () => {
 							<Button
 								size="sm"
 								className="bg-primary text-primary-foreground hover:bg-primary/90 glow-primary"
+								onClick={() => scrollToSection("contact")}
 							>
-								{">"} Get Started
+								Get Started
 							</Button>
 						</div>
 					</div>
@@ -132,7 +170,7 @@ const Index = () => {
 					<div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/50 to-background" />
 				</div>
 
-				<div className="relative z-10 max-w-7xl mx-auto grid lg:grid-cols-2 gap-8 items-center">
+				<div className="relative z-10 max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
 					<motion.div
 						initial={{ opacity: 0, x: -50 }}
 						animate={{ opacity: 1, x: 0 }}
@@ -145,43 +183,43 @@ const Index = () => {
 						</div>
 
 						<h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
-							Architects of the{" "}
+							Engineer your{" "}
 							<span className="text-primary glow-primary glitch-text">
-								Digital Future
+								Future
 							</span>
 						</h1>
 
 						<p className="text-lg md:text-xl text-muted-foreground mb-8 font-mono">
-							We craft experiences that redefine the future. From innovative
-							software to groundbreaking hardware, we're dedicated to shaping a
-							connected world where innovation knows no bounds.
+							We build tech that actually behaves — from smart software to hardware that doesn’t need emotional support. The world’s moving forward; we’re just here to make sure you don’t get left behind.
 						</p>
 
 						<div className="flex flex-wrap gap-4 mb-8">
 							<Button
 								size="lg"
 								className="bg-primary text-primary-foreground hover:bg-primary/90 glow-primary"
+								onClick={() => scrollToSection("contact")}
 							>
-								{">"} Ship MVP
+								Initialize Now
 							</Button>
 							<Button
 								size="lg"
 								variant="outline"
 								className="border-primary text-primary hover:bg-primary hover:text-primary-foreground"
+								onClick={() => scrollToSection("about")}
 							>
-								{">"} Open Terminal
+								About the Brains
 							</Button>
 						</div>
 
 						<div className="flex items-center gap-4 text-sm text-muted-foreground font-mono">
 							<div className="flex items-center gap-2">
 								<div className="w-2 h-2 rounded-full bg-secondary" />
-								<span>100+ Projects</span>
+								<span>30+ Projects</span>
 							</div>
 							<span>|</span>
 							<div className="flex items-center gap-2">
 								<div className="w-2 h-2 rounded-full bg-primary" />
-								<span>50+ Clients</span>
+								<span>20+ Clients</span>
 							</div>
 						</div>
 					</motion.div>
@@ -203,35 +241,57 @@ const Index = () => {
 			</section>
 
 			{/* About Section */}
-			<section className="relative py-20 px-4 bg-gradient-to-b from-background to-muted/20">
-				<div className="max-w-4xl mx-auto">
+			<section id="about" className="relative min-h-screen flex items-center py-20 px-4 bg-gradient-to-b from-background to-muted/20">
+				<div className="max-w-5xl mx-auto">
 					<motion.div
 						initial={{ opacity: 0, y: 20 }}
 						whileInView={{ opacity: 1, y: 0 }}
 						viewport={{ once: true }}
 						transition={{ duration: 0.6 }}
-						className="text-center"
+						className="text-center space-y-8"
 					>
-						<span className="text-primary font-mono text-sm glow-primary">
-							$ cat about.txt
-						</span>
-						<h2 className="text-3xl md:text-5xl font-bold mt-2 mb-6">
-							We Are{" "}
-							<span className="text-primary glow-primary">Extend IT</span>
-						</h2>
-						<p className="text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-							A dynamic tech company creating innovative solutions that solve
-							real-world challenges. We craft experiences that redefine the
-							future, building a connected world where innovation knows no
-							bounds. From groundbreaking software to revolutionary hardware,
-							we're your partners in digital transformation.
-						</p>
+						<div className="text-center mb-12">
+							<span className="text-primary font-mono text-sm glow-primary">
+								$ cat about.txt
+							</span>
+							<h2 className="text-4xl md:text-6xl font-bold mt-4 mb-6">
+								We Are{" "}
+								<span className="text-primary glow-primary">Extend IT</span>
+							</h2>
+						</div>
+
+						<div className="space-y-16 text-lg md:text-xl text-muted-foreground leading-relaxed font-mono max-w-4xl mx-auto">
+							<motion.p 
+								initial={{ opacity: 0, y: 20 }}
+								whileInView={{ opacity: 1, y: 0 }}
+								transition={{ delay: 0.2 }}
+							>
+								Established in 2020 — yes, we’ve been doing this long before “AI expert” became everyone’s LinkedIn title.
+							</motion.p>
+							
+							<motion.p
+								initial={{ opacity: 0, y: 20 }}
+								whileInView={{ opacity: 1, y: 0 }}
+								transition={{ delay: 0.4 }}
+							>
+								We’re a dynamic tech company creating <span className="text-foreground font-bold">“innovative solutions”</span> — except ours actually work. Real-world challenges? We solve them. Dramatically overcomplicated problems? We simplify them. And those “future-ready digital transformations” everyone keeps talking about? Yeah, we’ve been doing that while others were still figuring out how to unmute themselves on Zoom.
+							</motion.p>
+
+							<motion.p
+								initial={{ opacity: 0, y: 20 }}
+								whileInView={{ opacity: 1, y: 0 }}
+								transition={{ delay: 0.8 }}
+								className="text-primary/80 font-bold"
+							>
+								We’re your partners in digital transformation, whether you’re ready for it or still pretending your spreadsheet system is “fine.” Let’s build the future — or at least drag you into it.
+							</motion.p>
+						</div>
 					</motion.div>
 				</div>
 			</section>
 
 			{/* Services Section */}
-			<section className="relative py-20 px-4">
+			<section id="services" className="relative py-20 px-4">
 				<div className="max-w-7xl mx-auto">
 					<motion.div
 						initial={{ opacity: 0, y: 20 }}
@@ -249,6 +309,8 @@ const Index = () => {
 						</h2>
 						<p className="text-muted-foreground max-w-2xl">
 							Full-stack solutions for the modern digital landscape.
+							<br />
+							<span className="text-sm opacity-80">(Yes, the real modern one — not the “we just discovered React” kind.)</span>
 						</p>
 					</motion.div>
 
@@ -261,27 +323,36 @@ const Index = () => {
 								viewport={{ once: true }}
 								transition={{ duration: 0.5, delay: index * 0.1 }}
 							>
-								<Card className="p-6 h-full bg-card/50 backdrop-blur-sm border-border hover:border-primary/50 transition-all duration-300 hover:box-glow-primary group cursor-pointer">
-									<div className="mb-4">
-										<div className="w-12 h-12 rounded bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
-											<service.icon className="w-6 h-6 text-primary" />
+								<Card className="p-6 h-full bg-card/50 backdrop-blur-sm border-border hover:border-primary/50 transition-all duration-300 hover:box-glow-primary group cursor-pointer flex flex-col">
+									<div className="flex-1">
+										<div className="mb-4">
+											<div className="w-12 h-12 rounded bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
+												<service.icon className="w-6 h-6 text-primary" />
+											</div>
+											<h3 className="text-xl font-bold mb-2 group-hover:text-primary transition-colors">
+												{service.title}
+											</h3>
 										</div>
-										<h3 className="text-xl font-bold mb-2 group-hover:text-primary transition-colors">
-											{service.title}
-										</h3>
+										<p className="text-muted-foreground mb-4 text-sm">
+											{service.description}
+										</p>
 									</div>
-									<p className="text-muted-foreground mb-4 text-sm">
-										{service.description}
-									</p>
-									<div className="flex flex-wrap gap-2">
-										{service.tags.map((tag, i) => (
-											<span
-												key={i}
-												className="text-xs px-2 py-1 bg-muted rounded font-mono text-muted-foreground"
-											>
-												{tag}
-											</span>
-										))}
+									<div className="mt-auto">
+										{service.tagLabel && (
+											<p className="text-xs font-mono text-primary mb-2 opacity-80">
+												{service.tagLabel}
+											</p>
+										)}
+										<div className="flex flex-wrap gap-2">
+											{service.tags.map((tag, i) => (
+												<span
+													key={i}
+													className="text-xs px-2 py-1 bg-muted rounded font-mono text-muted-foreground"
+												>
+													{tag}
+												</span>
+											))}
+										</div>
 									</div>
 								</Card>
 							</motion.div>
@@ -309,27 +380,80 @@ const Index = () => {
 						</h2>
 					</motion.div>
 
-					<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
-						{partners.map((partner, index) => (
+					<div className="relative w-full overflow-hidden space-y-0 py-12">
+						{/* Row 1: Walks to Right */}
+						<div className="flex w-full overflow-hidden mask-gradient-x py-6">
 							<motion.div
-								key={index}
-								initial={{ opacity: 0, scale: 0.8 }}
-								whileInView={{ opacity: 1, scale: 1 }}
-								viewport={{ once: true }}
-								transition={{ duration: 0.4, delay: index * 0.05 }}
+								className="flex gap-8 items-center whitespace-nowrap"
+								animate={{ x: ["-50%", "0%"] }}
+								transition={{
+									repeat: Infinity,
+									duration: 100,
+									ease: "linear",
+								}}
 							>
-								<Card className="aspect-square flex items-center justify-center bg-card/30 backdrop-blur-sm border-border hover:border-primary/50 transition-all duration-300 hover:box-glow-primary cursor-pointer">
-									<div className="text-center">
-										<div className="text-2xl font-bold text-primary mb-1">
-											{partner.logo}
-										</div>
-										<div className="text-xs text-muted-foreground">
-											{partner.name}
-										</div>
+								{[...firstRow, ...firstRow, ...firstRow, ...firstRow].map((partner, index) => (
+									<div key={`row1-${index}`} className="w-[240px] flex-shrink-0">
+										<Tilt
+											tiltMaxAngleX={10}
+											tiltMaxAngleY={10}
+											perspective={1000}
+											scale={1.05}
+											className="h-full"
+										>
+											<div className="relative h-40 flex items-center justify-center p-8 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 group cursor-pointer overflow-hidden">
+												{/* Neon Circuit Effect */}
+												<div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/20 to-transparent translate-x-[-100%] group-hover:animate-shimmer" />
+												<div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 border-2 border-primary/50 rounded-xl box-glow-primary" />
+												
+												<img
+													src={partner.logo}
+													alt={partner.name}
+													className="max-h-full max-w-full object-contain grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300 filter relative z-10"
+												/>
+											</div>
+										</Tilt>
 									</div>
-								</Card>
+								))}
 							</motion.div>
-						))}
+						</div>
+
+						{/* Row 2: Walks to Left */}
+						<div className="flex w-full overflow-hidden mask-gradient-x py-6">
+							<motion.div
+								className="flex gap-8 items-center whitespace-nowrap"
+								animate={{ x: ["0%", "-50%"] }}
+								transition={{
+									repeat: Infinity,
+									duration: 100,
+									ease: "linear",
+								}}
+							>
+								{[...secondRow, ...secondRow, ...secondRow, ...secondRow].map((partner, index) => (
+									<div key={`row2-${index}`} className="w-[240px] flex-shrink-0">
+										<Tilt
+											tiltMaxAngleX={10}
+											tiltMaxAngleY={10}
+											perspective={1000}
+											scale={1.05}
+											className="h-full"
+										>
+											<div className="relative h-40 flex items-center justify-center p-8 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 group cursor-pointer overflow-hidden">
+												{/* Neon Circuit Effect */}
+												<div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/20 to-transparent translate-x-[-100%] group-hover:animate-shimmer" />
+												<div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 border-2 border-primary/50 rounded-xl box-glow-primary" />
+
+												<img
+													src={partner.logo}
+													alt={partner.name}
+													className="max-h-full max-w-full object-contain grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300 filter relative z-10"
+												/>
+											</div>
+										</Tilt>
+									</div>
+								))}
+							</motion.div>
+						</div>
 					</div>
 				</div>
 			</section>
@@ -445,10 +569,10 @@ const Index = () => {
 			</section>
 
 			{/* Budget Estimator */}
-			<BudgetEstimator />
+			{/* <BudgetEstimator /> */}
 
 			{/* Contact Section */}
-			<section className="relative py-20 px-4">
+			<section id="contact" className="relative py-20 px-4">
 				<div className="max-w-4xl mx-auto">
 					<motion.div
 						initial={{ opacity: 0, y: 20 }}
@@ -473,59 +597,78 @@ const Index = () => {
 
 						<Card className="p-6 md:p-8 bg-card/50 backdrop-blur-sm border-primary/20 box-glow-primary">
 							<form onSubmit={handleSubmit} className="space-y-6">
-								<div>
-									<label
-										htmlFor="name"
-										className="block text-sm font-mono mb-2 text-foreground"
-									>
-										{">"} Name
-									</label>
-									<Input
-										id="name"
-										value={formData.name}
-										onChange={(e) =>
-											setFormData({ ...formData, name: e.target.value })
-										}
-										placeholder="John Doe"
-										required
-										className="bg-background border-border focus:border-primary"
-									/>
+								<div className="grid md:grid-cols-2 gap-4">
+									<div>
+										<label
+											htmlFor="category"
+											className="block text-sm font-mono mb-2 text-foreground"
+										>
+											{">"} Industry Category
+										</label>
+										<Select
+											value={formData.category}
+											onValueChange={(value) =>
+												setFormData({ ...formData, category: value, subCategory: "" })
+											}
+										>
+											<SelectTrigger className="bg-background border-border focus:ring-primary">
+												<SelectValue placeholder="Select category" />
+											</SelectTrigger>
+											<SelectContent>
+												{Object.keys(industries).map((category) => (
+													<SelectItem key={category} value={category}>
+														{category}
+													</SelectItem>
+												))}
+											</SelectContent>
+										</Select>
+									</div>
+
+									<div>
+										<label
+											htmlFor="subCategory"
+											className="block text-sm font-mono mb-2 text-foreground"
+										>
+											{">"} Specific Industry
+										</label>
+										<Select
+											value={formData.subCategory}
+											onValueChange={(value) =>
+												setFormData({ ...formData, subCategory: value })
+											}
+											disabled={!formData.category}
+										>
+											<SelectTrigger className="bg-background border-border focus:ring-primary">
+												<SelectValue placeholder="Select specific industry" />
+											</SelectTrigger>
+											<SelectContent>
+												{formData.category &&
+													industries[formData.category as keyof typeof industries].map(
+														(sub) => (
+															<SelectItem key={sub} value={sub}>
+																{sub}
+															</SelectItem>
+														),
+													)}
+											</SelectContent>
+										</Select>
+									</div>
 								</div>
 
 								<div>
 									<label
-										htmlFor="email"
+										htmlFor="problem"
 										className="block text-sm font-mono mb-2 text-foreground"
 									>
-										{">"} Email
-									</label>
-									<Input
-										id="email"
-										type="email"
-										value={formData.email}
-										onChange={(e) =>
-											setFormData({ ...formData, email: e.target.value })
-										}
-										placeholder="john@example.com"
-										required
-										className="bg-background border-border focus:border-primary"
-									/>
-								</div>
-
-								<div>
-									<label
-										htmlFor="message"
-										className="block text-sm font-mono mb-2 text-foreground"
-									>
-										{">"} Message
+										{">"} What do you need in details?
 									</label>
 									<Textarea
-										id="message"
-										value={formData.message}
+										id="problem"
+										value={formData.problem}
 										onChange={(e) =>
-											setFormData({ ...formData, message: e.target.value })
+											setFormData({ ...formData, problem: e.target.value })
 										}
-										placeholder="Tell us about your project..."
+										placeholder="Describe your needs..."
 										rows={5}
 										required
 										className="bg-background border-border focus:border-primary resize-none"
@@ -536,7 +679,7 @@ const Index = () => {
 									type="submit"
 									className="w-full bg-primary text-primary-foreground hover:bg-primary/90 glow-primary"
 								>
-									{">"} Send Message
+									 Send via WhatsApp
 								</Button>
 							</form>
 						</Card>
@@ -559,19 +702,19 @@ const Index = () => {
 
 						<div className="flex items-center gap-6 text-sm text-muted-foreground font-mono">
 							<a href="#" className="hover:text-primary transition-colors">
-								GitHub
+								<Github className="w-5 h-5" />
 							</a>
 							<a href="#" className="hover:text-primary transition-colors">
-								LinkedIn
+								<Linkedin className="w-5 h-5" />
 							</a>
 							<a href="#" className="hover:text-primary transition-colors">
-								Twitter
+								<Instagram className="w-5 h-5" />
 							</a>
 						</div>
 					</div>
 
 					<div className="mt-6 pt-6 border-t border-border/30 text-center text-xs text-muted-foreground font-mono">
-						<p>© 2025 Extend IT. All rights reserved. | Version 1.0.0</p>
+						<p>© 2025 Extend IT. All rights reserved. | Version 0.0.1</p>
 					</div>
 				</div>
 			</footer>
