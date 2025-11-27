@@ -34,6 +34,9 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { fetchPartners, fetchPortfolio, STRAPI_URL } from "@/lib/api";
+import { Link } from "react-router-dom";
+import { LoadingScreen } from "@/components/LoadingScreen";
+import { ParallaxCard } from "@/components/ParallaxCard";
 
 const industries = {
 	"Technology & Digital": [
@@ -221,13 +224,6 @@ const Index = () => {
 								<span className="text-muted-foreground">|</span>
 								<span className="text-muted-foreground">Build: #1247</span>
 							</div>
-							<Button
-								size="sm"
-								className="bg-primary text-primary-foreground hover:bg-primary/90 glow-primary"
-								onClick={() => scrollToSection("contact")}
-							>
-								Get Started
-							</Button>
 						</div>
 					</div>
 				</div>
@@ -269,9 +265,9 @@ const Index = () => {
 							<Button
 								size="lg"
 								className="bg-primary text-primary-foreground hover:bg-primary/90 glow-primary"
-								onClick={() => scrollToSection("contact")}
+								asChild
 							>
-								Initialize Now
+								<Link to="/wizard">Initialize Now</Link>
 							</Button>
 							<Button
 								size="lg"
@@ -302,7 +298,9 @@ const Index = () => {
 						transition={{ duration: 0.8, delay: 0.2 }}
 						className="hidden lg:block"
 					>
-						<TerminalOverlay />
+						<ParallaxCard>
+							<TerminalOverlay />
+						</ParallaxCard>
 					</motion.div>
 				</div>
 
@@ -412,38 +410,40 @@ const Index = () => {
 								viewport={{ once: true }}
 								transition={{ duration: 0.5, delay: index * 0.1 }}
 							>
-								<Card className="p-6 h-full bg-card/50 backdrop-blur-xs border-border hover:border-primary/50 transition-all duration-300 hover:box-glow-primary group cursor-pointer flex flex-col">
-									<div className="flex-1">
-										<div className="mb-4">
-											<div className="w-12 h-12 rounded bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
-												<service.icon className="w-6 h-6 text-primary" />
+								<ParallaxCard className="h-full">
+									<Card className="p-6 h-full bg-card/50 backdrop-blur-sm border-border hover:border-primary/50 transition-all duration-300 group cursor-pointer flex flex-col">
+										<div className="flex-1">
+											<div className="mb-4">
+												<div className="w-12 h-12 rounded bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
+													<service.icon className="w-6 h-6 text-primary" />
+												</div>
+												<h3 className="text-xl font-bold mb-2 group-hover:text-primary transition-colors">
+													{service.title}
+												</h3>
 											</div>
-											<h3 className="text-xl font-bold mb-2 group-hover:text-primary transition-colors">
-												{service.title}
-											</h3>
-										</div>
-										<p className="text-muted-foreground mb-4 text-sm">
-											{service.description}
-										</p>
-									</div>
-									<div className="mt-auto">
-										{service.tagLabel && (
-											<p className="text-xs font-mono text-primary mb-2 opacity-80">
-												{service.tagLabel}
+											<p className="text-muted-foreground mb-4 text-sm">
+												{service.description}
 											</p>
-										)}
-										<div className="flex flex-wrap gap-2">
-											{service.tags.map((tag, i) => (
-												<span
-													key={i}
-													className="text-xs px-2 py-1 bg-muted rounded font-mono text-muted-foreground"
-												>
-													{tag}
-												</span>
-											))}
 										</div>
-									</div>
-								</Card>
+										<div className="mt-auto">
+											{service.tagLabel && (
+												<p className="text-xs font-mono text-primary mb-2 opacity-80">
+													{service.tagLabel}
+												</p>
+											)}
+											<div className="flex flex-wrap gap-2">
+												{service.tags.map((tag, i) => (
+													<span
+														key={i}
+														className="text-xs px-2 py-1 bg-muted rounded font-mono text-muted-foreground"
+													>
+														{tag}
+													</span>
+												))}
+											</div>
+										</div>
+									</Card>
+								</ParallaxCard>
 							</motion.div>
 						))}
 					</div>
@@ -821,8 +821,13 @@ const Index = () => {
 						</div>
 					</div>
 
-					<div className="mt-6 pt-6 border-t border-border/30 text-center text-xs text-muted-foreground font-mono">
+					<div className="mt-6 pt-6 border-t border-border/30 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-muted-foreground font-mono">
 						<p>© 2025 Extend IT. All rights reserved. | Version 0.0.1</p>
+						<div className="flex gap-4">
+							<Link to="/faq" className="hover:text-primary transition-colors">FAQ</Link>
+							<Link to="/terms" className="hover:text-primary transition-colors">Terms</Link>
+							<Link to="/privacy" className="hover:text-primary transition-colors">Privacy</Link>
+						</div>
 					</div>
 				</div>
 			</footer>
