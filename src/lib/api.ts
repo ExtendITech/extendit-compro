@@ -1,4 +1,4 @@
-export const STRAPI_URL = import.meta.env.VITE_STRAPI_URL || 'http://localhost:1337';
+export const STRAPI_URL = import.meta.env.VITE_STRAPI_URL || 'https://strapi.extend-it.dev';
 
 export interface PortfolioItem {
     id: number;
@@ -25,6 +25,29 @@ export async function fetchPortfolio(): Promise<PortfolioItem[]> {
         return json.data;
     } catch (error) {
         console.error("Error fetching portfolio:", error);
+        return [];
+    }
+}
+
+export interface PartnerItem {
+    id: number;
+    documentId: string;
+    name: string;
+    image: {
+        url: string;
+    } | null;
+}
+
+export async function fetchPartners(): Promise<PartnerItem[]> {
+    try {
+        const response = await fetch(`${STRAPI_URL}/api/partners?populate=*`);
+        if (!response.ok) {
+            throw new Error('Failed to fetch partners');
+        }
+        const json = await response.json();
+        return json.data;
+    } catch (error) {
+        console.error("Error fetching partners:", error);
         return [];
     }
 }

@@ -271,4 +271,21 @@ All colors MUST be HSL.
     background-size: 200% 100%;
     animation: holo-shimmer 3s linear infinite;
   }
+
+  .mask-gradient-x {
+    mask-image: linear-gradient(
+      to right,
+      transparent,
+      black 10%,
+      black 90%,
+      transparent
+    );
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent,
+      black 10%,
+      black 90%,
+      transparent
+    );
+  }
 }
