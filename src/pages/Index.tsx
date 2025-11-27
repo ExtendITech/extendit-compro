@@ -248,19 +248,19 @@ const Index = () => {
 					<div className="absolute inset-0 bg-linear-to-b from-transparent via-background/50 to-background" />
 				</div>
 
-				<div className="relative z-10 max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
+				<div className="relative z-10 max-w-4xl mx-auto text-center">
 					<motion.div
-						initial={{ opacity: 0, x: -50 }}
-						animate={{ opacity: 1, x: 0 }}
+						initial={{ opacity: 0, y: 10 }}
+						animate={{ opacity: 1, y: 0 }}
 						transition={{ duration: 0.8 }}
 					>
-						<div className="mb-4">
+						<div className="mb-4 flex justify-center">
 							<span className="inline-block px-3 py-1 bg-primary/10 border border-primary/30 rounded text-primary text-xs font-mono mb-4">
 								{">"} System Status: Operational
 							</span>
 						</div>
 
-						<h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
+						<h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight text-center">
 							Engineer your{" "}
 							<span className="text-primary glow-primary glitch-text">
 								Future
@@ -273,7 +273,7 @@ const Index = () => {
 							forward; we’re just here to make sure you don’t get left behind.
 						</p>
 
-						<div className="flex flex-wrap gap-4 mb-8">
+						<div className="flex justify-center flex-wrap gap-4 mb-8">
 							<Button
 								size="lg"
 								className="bg-primary text-primary-foreground hover:bg-primary/90 glow-primary"
@@ -291,7 +291,7 @@ const Index = () => {
 							</Button>
 						</div>
 
-						<div className="flex items-center gap-4 text-sm text-muted-foreground font-mono">
+						<div className="flex items-center justify-center gap-4 text-sm text-muted-foreground font-mono">
 							<div className="flex items-center gap-2">
 								<div className="w-2 h-2 rounded-full bg-secondary" />
 								<span>30+ Projects</span>
@@ -303,22 +303,49 @@ const Index = () => {
 							</div>
 						</div>
 					</motion.div>
+				</div>
+
+				{/* Scan line effect */}
+				<div className="absolute inset-0 pointer-events-none z-20">
+					<div className="scan-line absolute w-full h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
+				</div>
+			</section>
+
+			{/* About Section (Terminal moved here for large screens) */}
+			<section id="about" className="relative py-20 px-4">
+				<div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
+					<motion.div
+						initial={{ opacity: 0, y: 20 }}
+						whileInView={{ opacity: 1, y: 0 }}
+						viewport={{ once: true }}
+						transition={{ duration: 0.6 }}
+						className="text-left"
+					>
+						<span className="text-primary font-mono text-sm glow-primary">
+							$ cat about.md
+						</span>
+						<h2 className="text-3xl md:text-4xl font-bold mt-2 mb-4">
+							About the <span className="text-secondary glow-secondary">Brains</span>
+						</h2>
+						<p className="text-muted-foreground max-w-xl mb-4">
+							We’re a small team of engineers, designers, and product people who prefer clean interfaces, robust systems, and getting stuff done. We design and build products that last — no theatrical launches, just reliable features.
+						</p>
+						<p className="text-muted-foreground max-w-xl">
+							We focus on clarity and measurable outcomes: faster load times, fewer bugs, and features your users actually use. Want to see how we approach problems? Hit "Initialize Now" above and we’ll get to work.
+						</p>
+					</motion.div>
 
 					<motion.div
-						initial={{ opacity: 0, x: 50 }}
-						animate={{ opacity: 1, x: 0 }}
-						transition={{ duration: 0.8, delay: 0.2 }}
+						initial={{ opacity: 0, x: 20 }}
+						whileInView={{ opacity: 1, x: 0 }}
+						viewport={{ once: true }}
+						transition={{ duration: 0.6 }}
 						className="hidden lg:block"
 					>
 						<ParallaxCard>
 							<TerminalOverlay />
 						</ParallaxCard>
 					</motion.div>
-				</div>
-
-				{/* Scan line effect */}
-				<div className="absolute inset-0 pointer-events-none z-20">
-					<div className="scan-line absolute w-full h-px bg-linear-to-r from-transparent via-primary/30 to-transparent" />
 				</div>
 			</section>
 
