@@ -1,6 +1,10 @@
 import { useEffect, useRef } from "react";
 
-export const CodeBackground = () => {
+interface CodeBackgroundProps {
+	theme?: "dark" | "light";
+}
+
+export const CodeBackground = ({ theme = "dark" }: CodeBackgroundProps) => {
 	const canvasRef = useRef<HTMLCanvasElement>(null);
 
 	useEffect(() => {
@@ -20,10 +24,14 @@ export const CodeBackground = () => {
 		const drops: number[] = Array(columns).fill(0);
 
 		const draw = () => {
-			ctx.fillStyle = "rgba(10, 10, 15, 0.05)";
+			// Background fade
+			if (theme === "light") {
+				ctx.fillStyle = "rgba(255, 255, 255, 0.05)";
+			} else {
+				ctx.fillStyle = "rgba(10, 10, 15, 0.05)";
+			}
 			ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-			ctx.fillStyle = "#00d9ff";
 			ctx.font = `${fontSize}px JetBrains Mono, monospace`;
 
 			for (let i = 0; i < drops.length; i++) {
@@ -31,7 +39,14 @@ export const CodeBackground = () => {
 				const x = i * fontSize;
 				const y = drops[i] * fontSize;
 
-				ctx.fillStyle = Math.random() > 0.5 ? "#00d9ff" : "#00ff88";
+				if (theme === "light") {
+					// Blue/Violet for light theme
+					ctx.fillStyle = Math.random() > 0.5 ? "#2563eb" : "#7c3aed";
+				} else {
+					// Cyan/Green for dark theme
+					ctx.fillStyle = Math.random() > 0.5 ? "#00d9ff" : "#00ff88";
+				}
+				
 				ctx.fillText(text, x, y);
 
 				if (y > canvas.height && Math.random() > 0.975) {

@@ -16,7 +16,11 @@ const terminalLines = [
 	"✓ System ready",
 ];
 
-export const TerminalOverlay = () => {
+interface TerminalOverlayProps {
+	theme?: "dark" | "light";
+}
+
+export const TerminalOverlay = ({ theme = "dark" }: TerminalOverlayProps) => {
 	const [displayedLines, setDisplayedLines] = useState<string[]>([]);
 	const [currentLineIndex, setCurrentLineIndex] = useState(0);
 
@@ -31,9 +35,17 @@ export const TerminalOverlay = () => {
 		}
 	}, [currentLineIndex]);
 
+	const containerClass = theme === "light" 
+		? "font-mono text-xs bg-white/80 backdrop-blur-md border border-gray-200 rounded p-4 max-w-md shadow-xl text-gray-800"
+		: "font-mono text-xs bg-terminal-bg/80 backdrop-blur-md border border-primary/20 rounded p-4 max-w-md";
+
+	const headerBorderClass = theme === "light"
+		? "border-gray-200"
+		: "border-primary/10";
+
 	return (
-		<div className="font-mono text-xs bg-terminal-bg/80 backdrop-blur-md border border-primary/20 rounded p-4 max-w-md">
-			<div className="flex items-center gap-2 mb-3 pb-2 border-b border-primary/10">
+		<div className={containerClass}>
+			<div className={`flex items-center gap-2 mb-3 pb-2 border-b ${headerBorderClass}`}>
 				<div className="flex gap-1.5">
 					<div className="w-3 h-3 rounded-full bg-destructive/80" />
 					<div className="w-3 h-3 rounded-full bg-accent/80" />
@@ -47,17 +59,17 @@ export const TerminalOverlay = () => {
 						key={i}
 						className={`${
 							line.includes("✓")
-								? "text-secondary"
+								? theme === "light" ? "text-green-600" : "text-secondary"
 								: line.includes("➜")
-									? "text-primary"
-									: "text-terminal-text"
+									? theme === "light" ? "text-blue-600" : "text-primary"
+									: theme === "light" ? "text-gray-600" : "text-terminal-text"
 						} ${i === displayedLines.length - 1 ? "animate-pulse" : ""}`}
 					>
 						{line || "\u00A0"}
 					</div>
 				))}
 				{currentLineIndex < terminalLines.length && (
-					<span className="inline-block w-2 h-4 bg-primary terminal-cursor" />
+					<span className={`inline-block w-2 h-4 ${theme === "light" ? "bg-gray-400" : "bg-primary"} terminal-cursor`} />
 				)}
 			</div>
 		</div>

@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import {
@@ -16,7 +17,8 @@ import {
 	Palette,
 	TrendingUp,
 } from "lucide-react";
-import { useState } from "react";
+
+
 import Tilt from "react-parallax-tilt";
 import { BudgetEstimator } from "@/components/BudgetEstimator";
 import { CodeBackground } from "@/components/CodeBackground";
@@ -98,6 +100,12 @@ const industries = {
 };
 
 const Index = () => {
+	const [isLoaded, setIsLoaded] = useState(false);
+
+	useEffect(() => {
+		const timer = setTimeout(() => setIsLoaded(true), 2000);
+		return () => clearTimeout(timer);
+	}, []);
 	const [formData, setFormData] = useState({
 		category: "",
 		subCategory: "",
@@ -205,29 +213,33 @@ const Index = () => {
 		<div className="relative min-h-screen bg-background text-foreground overflow-x-hidden theme-apple scrollbar-none">
 			<CodeBackground />
 
+			{/* Entrance / Loading Overlay */}
+			<motion.div
+				className="fixed inset-0 z-[9999] bg-black flex items-center justify-center"
+				initial={{ y: 0 }}
+				animate={{ y: isLoaded ? "-100%" : "0%" }}
+				transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
+			>
+				<div className="text-white text-4xl md:text-6xl font-bold tracking-tighter overflow-hidden">
+					<motion.div initial={{ y: "100%" }} animate={{ y: "0%" }} transition={{ duration: 0.5, delay: 0.2 }}>
+						Extend IT
+					</motion.div>
+				</div>
+			</motion.div>
+
 			{/* Navigation */}
 			<nav className="relative z-50 border-b border-border/50 bg-background/50 backdrop-blur-md">
-				<div className="max-w-7xl mx-auto px-4 py-3">
-					<div className="flex items-center justify-between">
-						<div className="flex items-center gap-2 font-mono">
-							<Logo className="h-16 md:-ml-4" />
-							<span className="text-xs text-muted-foreground hidden md:inline">
-								~/projects/digital-future
-							</span>
-						</div>
-						<div className="flex items-center gap-4">
-							<div className="hidden md:flex items-center gap-2 text-xs">
-								<div className="flex items-center gap-1.5">
-									<span className="w-2 h-2 rounded-full bg-secondary animate-pulse" />
-									<span className="text-secondary">Live</span>
-								</div>
-								<span className="text-muted-foreground">|</span>
-								<span className="text-muted-foreground">Build: #1247</span>
-							</div>
-						</div>
-					</div>
-				</div>
-			</nav>
+				   <div className="max-w-7xl mx-auto px-4 py-3">
+					   <div className="flex items-center justify-between">
+						   <div className="flex items-center gap-2 font-mono">
+							   <Logo className="h-16 md:-ml-4" />
+							   <span className="text-xs text-muted-foreground hidden md:inline">
+								   ~/projects/digital-future
+							   </span>
+						   </div>
+					   </div>
+				   </div>
+		   </nav>
 
 			{/* Hero Section */}
 			<section className="relative min-h-screen flex items-center justify-center px-4 py-20">
@@ -481,31 +493,29 @@ const Index = () => {
 									ease: "linear",
 								}}
 							>
-								{[...firstRow, ...firstRow, ...firstRow, ...firstRow].map(
-									(partner, index) => (
-										<div key={`row1-${index}`} className="w-[240px] shrink-0">
-											<Tilt
-												tiltMaxAngleX={10}
-												tiltMaxAngleY={10}
-												perspective={1000}
-												scale={1.05}
-												className="h-full"
-											>
-												<div className="relative h-40 flex items-center justify-center p-8 bg-white/5 backdrop-blur-xs rounded-xl border border-white/10 group cursor-pointer overflow-hidden">
-													{/* Neon Circuit Effect */}
-													<div className="absolute inset-0 bg-linear-to-r from-transparent via-primary/20 to-transparent -translate-x-full group-hover:animate-shimmer" />
-													<div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 border-2 border-primary/50 rounded-xl box-glow-primary" />
-
-													<img
-														src={partner.logo}
-														alt={partner.name}
-														className="max-h-full max-w-full object-contain grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300 filter relative z-10"
-													/>
-												</div>
-											</Tilt>
-										</div>
-									),
-								)}
+								{[...firstRow, ...firstRow, ...firstRow, ...firstRow].map((partner, index) => (
+									<div key={`row1-${index}`} className="w-[240px] flex-shrink-0">
+										<Tilt
+											tiltMaxAngleX={2.5}
+											tiltMaxAngleY={2.5}
+											perspective={1000}
+											scale={1.02}
+											className="h-full"
+										>
+											<div className="relative h-40 flex items-center justify-center p-8 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 group cursor-pointer overflow-hidden">
+												{/* Neon Circuit Effect */}
+												<div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/20 to-transparent translate-x-[-100%] group-hover:animate-shimmer" />
+												<div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 border-2 border-primary/50 rounded-xl box-glow-primary" />
+												
+												<img
+													src={partner.logo}
+													alt={partner.name}
+													className="max-h-full max-w-full object-contain grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300 filter relative z-10"
+												/>
+											</div>
+										</Tilt>
+									</div>
+								))}
 							</motion.div>
 						</div>
 
@@ -520,27 +530,26 @@ const Index = () => {
 									ease: "linear",
 								}}
 							>
-								{[...secondRow, ...secondRow, ...secondRow, ...secondRow].map(
-									(partner, index) => (
-										<div key={`row2-${index}`} className="w-[240px] shrink-0">
-											<Tilt
-												tiltMaxAngleX={10}
-												tiltMaxAngleY={10}
-												perspective={1000}
-												scale={1.05}
-												className="h-full"
-											>
-												<div className="relative h-40 flex items-center justify-center p-8 bg-white/5 backdrop-blur-xs rounded-xl border border-white/10 group cursor-pointer overflow-hidden">
-													{/* Neon Circuit Effect */}
-													<div className="absolute inset-0 bg-linear-to-r from-transparent via-primary/20 to-transparent -translate-x-full group-hover:animate-shimmer" />
-													<div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 border-2 border-primary/50 rounded-xl box-glow-primary" />
+								{[...secondRow, ...secondRow, ...secondRow, ...secondRow].map((partner, index) => (
+									<div key={`row2-${index}`} className="w-[240px] flex-shrink-0">
+										<Tilt
+											tiltMaxAngleX={2.5}
+											tiltMaxAngleY={2.5}
+											perspective={1000}
+											scale={1.02}
+											className="h-full"
+										>
+											<div className="relative h-40 flex items-center justify-center p-8 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 group cursor-pointer overflow-hidden">
+												{/* Neon Circuit Effect */}
+												<div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/20 to-transparent translate-x-[-100%] group-hover:animate-shimmer" />
+												<div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 border-2 border-primary/50 rounded-xl box-glow-primary" />
 
-													<img
-														src={partner.logo}
-														alt={partner.name}
-														className="max-h-full max-w-full object-contain grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300 filter relative z-10"
-													/>
-												</div>
+												<img
+													src={partner.logo}
+													alt={partner.name}
+													className="max-h-full max-w-full object-contain grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300 filter relative z-10"
+												/>
+											</div>
 											</Tilt>
 										</div>
 									),
