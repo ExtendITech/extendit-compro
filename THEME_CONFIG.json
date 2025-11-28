@@ -169,7 +169,7 @@
         "css": "box-shadow: 0 0 20px hsl(var(--glow-primary) / 0.3), 0 0 40px hsl(var(--glow-primary) / 0.1);"
       },
       "backdropBlur": {
-        "light": "backdrop-blur-sm",
+        "light": "backdrop-blur-xs",
         "medium": "backdrop-blur-md",
         "heavy": "backdrop-blur-lg"
       }
@@ -206,13 +206,13 @@
     "componentVariants": {
       "button": {
         "default": "Primary action button with electric blue background and glow",
-        "outline": "Secondary action with border and hover states",
+        "outline-solid": "Secondary action with border and hover states",
         "ghost": "Minimal button for tertiary actions",
         "destructive": "Error/delete actions in red"
       },
       "card": {
         "default": "Standard card with dark background and subtle border",
-        "elevated": "Card with glow effect and backdrop blur",
+        "elevated": "Card with glow effect and backdrop blur-sm",
         "glass": "Glassmorphism effect with transparency"
       }
     },

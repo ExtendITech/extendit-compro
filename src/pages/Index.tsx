@@ -1,29 +1,97 @@
-import Tilt from "react-parallax-tilt";
-import { motion } from "framer-motion";
-import { BookOpen, Calculator, Camera, Code2, Cpu, ExternalLink, Github, Mail, Palette, TrendingUp, Instagram, Linkedin, Globe, Laptop } from "lucide-react";
-import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { fetchPortfolio, fetchPartners, STRAPI_URL } from "@/lib/api";
+import { motion } from "framer-motion";
+import {
+	BookOpen,
+	Calculator,
+	Camera,
+	Code2,
+	Cpu,
+	ExternalLink,
+	Github,
+	Globe,
+	Instagram,
+	Laptop,
+	Linkedin,
+	Mail,
+	Palette,
+	TrendingUp,
+} from "lucide-react";
+import { useState } from "react";
+import Tilt from "react-parallax-tilt";
 import { BudgetEstimator } from "@/components/BudgetEstimator";
 import { CodeBackground } from "@/components/CodeBackground";
+import { Logo } from "@/components/Logo";
 import { TerminalOverlay } from "@/components/TerminalOverlay";
 import { ThreeCanvas } from "@/components/ThreeCanvas";
 import { Button } from "@/components/ui/button";
-import { Logo } from "@/components/Logo";
 import { Card } from "@/components/ui/card";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { fetchPartners, fetchPortfolio, STRAPI_URL } from "@/lib/api";
 
 const industries = {
-	"Technology & Digital": ["Website Development", "Mobile App Development", "Software Development", "Digital Marketing", "SEO / SEM", "IT Services", "Cybersecurity", "Data & Analytics", "AI / Machine Learning", "Cloud Services"],
-	"Design & Creative": ["Graphic Design", "UI/UX Design", "Branding & Identity", "Motion Graphics", "Video Production", "Photography"],
-	"Business & Consulting": ["Business Consulting", "Finance & Accounting", "Legal Services", "HR & Recruitment", "Project Management", "Training & Education"],
-	"Retail & Hospitality": ["E-Commerce", "Food & Beverage", "Travel & Hospitality", "Fashion & Apparel", "Consumer Goods"],
-	"Industrial & Technical": ["Construction", "Architecture", "Engineering", "Manufacturing", "Automotive", "Energy & Utility"],
-	"Health & Social": ["Healthcare", "Medical Services", "Non-Profit / NGO", "Government & Public Sector"],
-	"Media & Communication": ["Advertising", "PR & Communications", "Journalism & Broadcasting"],
+	"Technology & Digital": [
+		"Website Development",
+		"Mobile App Development",
+		"Software Development",
+		"Digital Marketing",
+		"SEO / SEM",
+		"IT Services",
+		"Cybersecurity",
+		"Data & Analytics",
+		"AI / Machine Learning",
+		"Cloud Services",
+	],
+	"Design & Creative": [
+		"Graphic Design",
+		"UI/UX Design",
+		"Branding & Identity",
+		"Motion Graphics",
+		"Video Production",
+		"Photography",
+	],
+	"Business & Consulting": [
+		"Business Consulting",
+		"Finance & Accounting",
+		"Legal Services",
+		"HR & Recruitment",
+		"Project Management",
+		"Training & Education",
+	],
+	"Retail & Hospitality": [
+		"E-Commerce",
+		"Food & Beverage",
+		"Travel & Hospitality",
+		"Fashion & Apparel",
+		"Consumer Goods",
+	],
+	"Industrial & Technical": [
+		"Construction",
+		"Architecture",
+		"Engineering",
+		"Manufacturing",
+		"Automotive",
+		"Energy & Utility",
+	],
+	"Health & Social": [
+		"Healthcare",
+		"Medical Services",
+		"Non-Profit / NGO",
+		"Government & Public Sector",
+	],
+	"Media & Communication": [
+		"Advertising",
+		"PR & Communications",
+		"Journalism & Broadcasting",
+	],
 	"Real Estate": ["Property Development", "Real Estate Agency"],
-	"Others": ["Other"]
+	Others: ["Other"],
 };
 
 const Index = () => {
@@ -40,7 +108,7 @@ const Index = () => {
 		}
 	};
 
-	const { data: portfolioData, isLoading } = useQuery({
+	const { data: portfolioData } = useQuery({
 		queryKey: ["portfolio"],
 		queryFn: fetchPortfolio,
 	});
@@ -101,25 +169,27 @@ const Index = () => {
 		},
 	];
 
-	const partners = partnersData?.map((item) => ({
-		name: item.name,
-		logo: item.image ? `${STRAPI_URL}${item.image.url}` : "",
-	})) || [];
+	const partners =
+		partnersData?.map((item) => ({
+			name: item.name,
+			logo: item.image ? `${STRAPI_URL}${item.image.url}` : "",
+		})) || [];
 
 	const firstRow = partners.slice(0, Math.ceil(partners.length / 2));
 	const secondRow = partners.slice(Math.ceil(partners.length / 2));
 
-	const portfolio = portfolioData?.map((item) => ({
-		icon: Code2,
-		name: item.title,
-		description: item.description,
-		technologies: Array.isArray(item.techStack) ? item.techStack : [],
-		category: item.category,
-		projectUrl: item.projectLink,
-		githubUrl: item.githubLink,
-		image: item.image ? `${STRAPI_URL}${item.image.url}` : null,
-		gradient: item.fallbackGradient || "from-blue-500/20 to-cyan-500/20",
-	})) || [];
+	const portfolio =
+		portfolioData?.map((item) => ({
+			icon: Code2,
+			name: item.title,
+			description: item.description,
+			technologies: Array.isArray(item.techStack) ? item.techStack : [],
+			category: item.category,
+			projectUrl: item.projectLink,
+			githubUrl: item.githubLink,
+			image: item.image ? `${STRAPI_URL}${item.image.url}` : null,
+			gradient: item.fallbackGradient || "from-blue-500/20 to-cyan-500/20",
+		})) || [];
 
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
@@ -129,7 +199,7 @@ const Index = () => {
 	};
 
 	return (
-		<div className="relative min-h-screen bg-background text-foreground overflow-x-hidden theme-apple">
+		<div className="relative min-h-screen bg-background text-foreground overflow-x-hidden theme-apple scrollbar-none">
 			<CodeBackground />
 
 			{/* Navigation */}
@@ -167,7 +237,7 @@ const Index = () => {
 			<section className="relative min-h-screen flex items-center justify-center px-4 py-20">
 				<div className="absolute inset-0 z-0">
 					<ThreeCanvas className="w-full h-full" />
-					<div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/50 to-background" />
+					<div className="absolute inset-0 bg-linear-to-b from-transparent via-background/50 to-background" />
 				</div>
 
 				<div className="relative z-10 max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
@@ -190,7 +260,9 @@ const Index = () => {
 						</h1>
 
 						<p className="text-lg md:text-xl text-muted-foreground mb-8 font-mono">
-							We build tech that actually behaves — from smart software to hardware that doesn’t need emotional support. The world’s moving forward; we’re just here to make sure you don’t get left behind.
+							We build tech that actually behaves — from smart software to
+							hardware that doesn’t need emotional support. The world’s moving
+							forward; we’re just here to make sure you don’t get left behind.
 						</p>
 
 						<div className="flex flex-wrap gap-4 mb-8">
@@ -236,12 +308,15 @@ const Index = () => {
 
 				{/* Scan line effect */}
 				<div className="absolute inset-0 pointer-events-none z-20">
-					<div className="scan-line absolute w-full h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
+					<div className="scan-line absolute w-full h-px bg-linear-to-r from-transparent via-primary/30 to-transparent" />
 				</div>
 			</section>
 
 			{/* About Section */}
-			<section id="about" className="relative min-h-screen flex items-center py-20 px-4 bg-gradient-to-b from-background to-muted/20">
+			<section
+				id="about"
+				className="relative min-h-screen flex items-center py-20 px-4 bg-linear-to-b from-background to-muted/20"
+			>
 				<div className="max-w-5xl mx-auto">
 					<motion.div
 						initial={{ opacity: 0, y: 20 }}
@@ -261,20 +336,29 @@ const Index = () => {
 						</div>
 
 						<div className="space-y-16 text-lg md:text-xl text-muted-foreground leading-relaxed font-mono max-w-4xl mx-auto">
-							<motion.p 
+							<motion.p
 								initial={{ opacity: 0, y: 20 }}
 								whileInView={{ opacity: 1, y: 0 }}
 								transition={{ delay: 0.2 }}
 							>
-								Established in 2020 — yes, we’ve been doing this long before “AI expert” became everyone’s LinkedIn title.
+								Established in 2020 — yes, we’ve been doing this long before “AI
+								expert” became everyone’s LinkedIn title.
 							</motion.p>
-							
+
 							<motion.p
 								initial={{ opacity: 0, y: 20 }}
 								whileInView={{ opacity: 1, y: 0 }}
 								transition={{ delay: 0.4 }}
 							>
-								We’re a dynamic tech company creating <span className="text-foreground font-bold">“innovative solutions”</span> — except ours actually work. Real-world challenges? We solve them. Dramatically overcomplicated problems? We simplify them. And those “future-ready digital transformations” everyone keeps talking about? Yeah, we’ve been doing that while others were still figuring out how to unmute themselves on Zoom.
+								We’re a dynamic tech company creating{" "}
+								<span className="text-foreground font-bold">
+									“innovative solutions”
+								</span>{" "}
+								— except ours actually work. Real-world challenges? We solve
+								them. Dramatically overcomplicated problems? We simplify them.
+								And those “future-ready digital transformations” everyone keeps
+								talking about? Yeah, we’ve been doing that while others were
+								still figuring out how to unmute themselves on Zoom.
 							</motion.p>
 
 							<motion.p
@@ -283,7 +367,9 @@ const Index = () => {
 								transition={{ delay: 0.8 }}
 								className="text-primary/80 font-bold"
 							>
-								We’re your partners in digital transformation, whether you’re ready for it or still pretending your spreadsheet system is “fine.” Let’s build the future — or at least drag you into it.
+								We’re your partners in digital transformation, whether you’re
+								ready for it or still pretending your spreadsheet system is
+								“fine.” Let’s build the future — or at least drag you into it.
 							</motion.p>
 						</div>
 					</motion.div>
@@ -310,7 +396,10 @@ const Index = () => {
 						<p className="text-muted-foreground max-w-2xl">
 							Full-stack solutions for the modern digital landscape.
 							<br />
-							<span className="text-sm opacity-80">(Yes, the real modern one — not the “we just discovered React” kind.)</span>
+							<span className="text-sm opacity-80">
+								(Yes, the real modern one — not the “we just discovered React”
+								kind.)
+							</span>
 						</p>
 					</motion.div>
 
@@ -323,7 +412,7 @@ const Index = () => {
 								viewport={{ once: true }}
 								transition={{ duration: 0.5, delay: index * 0.1 }}
 							>
-								<Card className="p-6 h-full bg-card/50 backdrop-blur-sm border-border hover:border-primary/50 transition-all duration-300 hover:box-glow-primary group cursor-pointer flex flex-col">
+								<Card className="p-6 h-full bg-card/50 backdrop-blur-xs border-border hover:border-primary/50 transition-all duration-300 hover:box-glow-primary group cursor-pointer flex flex-col">
 									<div className="flex-1">
 										<div className="mb-4">
 											<div className="w-12 h-12 rounded bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
@@ -362,7 +451,7 @@ const Index = () => {
 			</section>
 
 			{/* Partners Section */}
-			<section className="relative py-20 px-4 bg-gradient-to-b from-transparent to-muted/20">
+			<section className="relative py-20 px-4 bg-linear-to-b from-transparent to-muted/20">
 				<div className="max-w-6xl mx-auto">
 					<motion.div
 						initial={{ opacity: 0, y: 20 }}
@@ -392,29 +481,31 @@ const Index = () => {
 									ease: "linear",
 								}}
 							>
-								{[...firstRow, ...firstRow, ...firstRow, ...firstRow].map((partner, index) => (
-									<div key={`row1-${index}`} className="w-[240px] flex-shrink-0">
-										<Tilt
-											tiltMaxAngleX={10}
-											tiltMaxAngleY={10}
-											perspective={1000}
-											scale={1.05}
-											className="h-full"
-										>
-											<div className="relative h-40 flex items-center justify-center p-8 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 group cursor-pointer overflow-hidden">
-												{/* Neon Circuit Effect */}
-												<div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/20 to-transparent translate-x-[-100%] group-hover:animate-shimmer" />
-												<div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 border-2 border-primary/50 rounded-xl box-glow-primary" />
-												
-												<img
-													src={partner.logo}
-													alt={partner.name}
-													className="max-h-full max-w-full object-contain grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300 filter relative z-10"
-												/>
-											</div>
-										</Tilt>
-									</div>
-								))}
+								{[...firstRow, ...firstRow, ...firstRow, ...firstRow].map(
+									(partner, index) => (
+										<div key={`row1-${index}`} className="w-[240px] shrink-0">
+											<Tilt
+												tiltMaxAngleX={10}
+												tiltMaxAngleY={10}
+												perspective={1000}
+												scale={1.05}
+												className="h-full"
+											>
+												<div className="relative h-40 flex items-center justify-center p-8 bg-white/5 backdrop-blur-xs rounded-xl border border-white/10 group cursor-pointer overflow-hidden">
+													{/* Neon Circuit Effect */}
+													<div className="absolute inset-0 bg-linear-to-r from-transparent via-primary/20 to-transparent -translate-x-full group-hover:animate-shimmer" />
+													<div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 border-2 border-primary/50 rounded-xl box-glow-primary" />
+
+													<img
+														src={partner.logo}
+														alt={partner.name}
+														className="max-h-full max-w-full object-contain grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300 filter relative z-10"
+													/>
+												</div>
+											</Tilt>
+										</div>
+									),
+								)}
 							</motion.div>
 						</div>
 
@@ -429,29 +520,31 @@ const Index = () => {
 									ease: "linear",
 								}}
 							>
-								{[...secondRow, ...secondRow, ...secondRow, ...secondRow].map((partner, index) => (
-									<div key={`row2-${index}`} className="w-[240px] flex-shrink-0">
-										<Tilt
-											tiltMaxAngleX={10}
-											tiltMaxAngleY={10}
-											perspective={1000}
-											scale={1.05}
-											className="h-full"
-										>
-											<div className="relative h-40 flex items-center justify-center p-8 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 group cursor-pointer overflow-hidden">
-												{/* Neon Circuit Effect */}
-												<div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/20 to-transparent translate-x-[-100%] group-hover:animate-shimmer" />
-												<div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 border-2 border-primary/50 rounded-xl box-glow-primary" />
+								{[...secondRow, ...secondRow, ...secondRow, ...secondRow].map(
+									(partner, index) => (
+										<div key={`row2-${index}`} className="w-[240px] shrink-0">
+											<Tilt
+												tiltMaxAngleX={10}
+												tiltMaxAngleY={10}
+												perspective={1000}
+												scale={1.05}
+												className="h-full"
+											>
+												<div className="relative h-40 flex items-center justify-center p-8 bg-white/5 backdrop-blur-xs rounded-xl border border-white/10 group cursor-pointer overflow-hidden">
+													{/* Neon Circuit Effect */}
+													<div className="absolute inset-0 bg-linear-to-r from-transparent via-primary/20 to-transparent -translate-x-full group-hover:animate-shimmer" />
+													<div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 border-2 border-primary/50 rounded-xl box-glow-primary" />
 
-												<img
-													src={partner.logo}
-													alt={partner.name}
-													className="max-h-full max-w-full object-contain grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300 filter relative z-10"
-												/>
-											</div>
-										</Tilt>
-									</div>
-								))}
+													<img
+														src={partner.logo}
+														alt={partner.name}
+														className="max-h-full max-w-full object-contain grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300 filter relative z-10"
+													/>
+												</div>
+											</Tilt>
+										</div>
+									),
+								)}
 							</motion.div>
 						</div>
 					</div>
@@ -489,9 +582,11 @@ const Index = () => {
 								viewport={{ once: true }}
 								transition={{ duration: 0.5, delay: index * 0.1 }}
 							>
-								<Card className="p-0 h-full bg-card/50 backdrop-blur-sm border-border hover:border-primary/50 transition-all duration-300 hover:box-glow-primary group overflow-hidden">
+								<Card className="p-0 h-full bg-card/50 backdrop-blur-xs border-border hover:border-primary/50 transition-all duration-300 hover:box-glow-primary group overflow-hidden">
 									{/* Image/Visual area */}
-									<div className={`aspect-video relative overflow-hidden ${project.image ? 'bg-background' : `bg-gradient-to-br ${project.gradient}`}`}>
+									<div
+										className={`aspect-video relative overflow-hidden ${project.image ? "bg-background" : `bg-linear-to-br ${project.gradient}`}`}
+									>
 										{project.image ? (
 											<>
 												<img
@@ -499,24 +594,25 @@ const Index = () => {
 													alt={project.name}
 													className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
 												/>
-												<div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent" />
+												<div className="absolute inset-0 bg-linear-to-t from-background via-background/50 to-transparent" />
 											</>
 										) : (
 											<>
 												<div className="absolute inset-0 flex items-center justify-center">
-													<div className="w-20 h-20 rounded-xl bg-background/80 backdrop-blur-sm flex items-center justify-center border border-border group-hover:scale-110 transition-transform duration-300">
+													<div className="w-20 h-20 rounded-xl bg-background/80 backdrop-blur-xs flex items-center justify-center border border-border group-hover:scale-110 transition-transform duration-300">
 														<project.icon className="w-10 h-10 text-primary" />
 													</div>
 												</div>
-												<div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent" />
+												<div className="absolute inset-0 bg-linear-to-t from-background via-background/50 to-transparent" />
 											</>
 										)}
 										<div className="absolute top-4 right-4">
-											<span className="text-xs px-3 py-1 bg-background/80 backdrop-blur-sm border border-primary/30 rounded-full font-mono text-primary">
+											<span className="text-xs px-3 py-1 bg-background/80 backdrop-blur-xs border border-primary/30 rounded-full font-mono text-primary">
 												{project.category}
 											</span>
 										</div>
-									</div>									{/* Content */}
+									</div>{" "}
+									{/* Content */}
 									<div className="p-6">
 										<h3 className="text-2xl font-bold mb-3 group-hover:text-primary transition-colors">
 											{project.name}
@@ -544,7 +640,11 @@ const Index = () => {
 												className="flex-1 bg-primary text-primary-foreground hover:bg-primary/90 glow-primary"
 												asChild
 											>
-												<a href={project.projectUrl} target="_blank" rel="noopener noreferrer">
+												<a
+													href={project.projectUrl}
+													target="_blank"
+													rel="noopener noreferrer"
+												>
 													<ExternalLink className="w-4 h-4 mr-2" />
 													View Project
 												</a>
@@ -555,7 +655,11 @@ const Index = () => {
 												className="border-primary/30 text-primary hover:bg-primary/10"
 												asChild
 											>
-												<a href={project.githubUrl} target="_blank" rel="noopener noreferrer">
+												<a
+													href={project.githubUrl}
+													target="_blank"
+													rel="noopener noreferrer"
+												>
 													<Github className="w-4 h-4" />
 												</a>
 											</Button>
@@ -595,7 +699,7 @@ const Index = () => {
 							</p>
 						</div>
 
-						<Card className="p-6 md:p-8 bg-card/50 backdrop-blur-sm border-primary/20 box-glow-primary">
+						<Card className="p-6 md:p-8 bg-card/50 backdrop-blur-xs border-primary/20 box-glow-primary">
 							<form onSubmit={handleSubmit} className="space-y-6">
 								<div className="grid md:grid-cols-2 gap-4">
 									<div>
@@ -608,7 +712,11 @@ const Index = () => {
 										<Select
 											value={formData.category}
 											onValueChange={(value) =>
-												setFormData({ ...formData, category: value, subCategory: "" })
+												setFormData({
+													...formData,
+													category: value,
+													subCategory: "",
+												})
 											}
 										>
 											<SelectTrigger className="bg-background border-border focus:ring-primary">
@@ -643,13 +751,13 @@ const Index = () => {
 											</SelectTrigger>
 											<SelectContent>
 												{formData.category &&
-													industries[formData.category as keyof typeof industries].map(
-														(sub) => (
-															<SelectItem key={sub} value={sub}>
-																{sub}
-															</SelectItem>
-														),
-													)}
+													industries[
+														formData.category as keyof typeof industries
+													].map((sub) => (
+														<SelectItem key={sub} value={sub}>
+															{sub}
+														</SelectItem>
+													))}
 											</SelectContent>
 										</Select>
 									</div>
@@ -679,7 +787,7 @@ const Index = () => {
 									type="submit"
 									className="w-full bg-primary text-primary-foreground hover:bg-primary/90 glow-primary"
 								>
-									 Send via WhatsApp
+									Send via WhatsApp
 								</Button>
 							</form>
 						</Card>

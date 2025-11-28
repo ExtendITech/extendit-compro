@@ -81,7 +81,7 @@ export const BudgetEstimator = () => {
 						</p>
 					</div>
 
-					<Card className="p-6 md:p-8 bg-card/50 backdrop-blur-sm border-primary/20 box-glow-primary">
+					<Card className="p-6 md:p-8 bg-card/50 backdrop-blur-xs border-primary/20 box-glow-primary">
 						<div className="grid md:grid-cols-2 gap-6 mb-6">
 							<div>
 								<Label

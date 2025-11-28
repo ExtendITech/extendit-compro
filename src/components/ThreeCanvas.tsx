@@ -277,7 +277,7 @@ export const ThreeCanvas = ({ className = "" }: ThreeCanvasProps) => {
 				onClick={() => setIsPaused(!isPaused)}
 				variant="outline"
 				size="sm"
-				className="absolute bottom-4 right-4 text-xs border-primary/30 bg-background/50 backdrop-blur-sm"
+				className="absolute bottom-4 right-4 text-xs border-primary/30 bg-background/50 backdrop-blur-xs"
 			>
 				{isPaused ? "▶ Resume" : "⏸ Pause"}
 			</Button>
