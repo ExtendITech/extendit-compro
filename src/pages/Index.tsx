@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
+
 import {
 	BookOpen,
 	Calculator,
@@ -120,6 +121,28 @@ const Index = () => {
 		}
 	};
 
+	// scroll-linked motion values
+	const { scrollYProgress } = useScroll();
+
+	// Make the TITLE move in sync with other hero elements (same timing/magnitude)
+	const titleY = useTransform(scrollYProgress, [0, 0.45], [0, -1500]);
+	// Paragraph: much faster and farther
+	const paragraphY = useTransform(scrollYProgress, [0, 0.5], [0, -1400]);
+	// Buttons: fastest among the non-title elements
+	const btnLeftY = useTransform(scrollYProgress, [0, 0.45], [0, -1500]);
+	const btnRightY = useTransform(scrollYProgress, [0, 0.45], [0, -1500]);
+	// Stats: faster than title but slightly less extreme than buttons
+	const statsLeftY = useTransform(scrollYProgress, [0, 0.45], [0, -1100]);
+	const statsRightY = useTransform(scrollYProgress, [0, 0.45], [0, -1100]);
+
+	// Opacity: title fades later; others fade earlier and quicker
+	const titleOpacity = useTransform(scrollYProgress, [0, 0.2, 0.45], [1, 0.85, 0]);
+	const paragraphOpacity = useTransform(scrollYProgress, [0, 0.25, 0.5], [1, 0.8, 0]);
+	const btnOpacity = useTransform(scrollYProgress, [0, 0.2, 0.45], [1, 0.85, 0]);
+	const statsOpacity = useTransform(scrollYProgress, [0, 0.2, 0.45], [1, 0.85, 0]);
+	// System Status should move with the buttons' cadence
+	const statusY = useTransform(scrollYProgress, [0, 0.45], [0, -1500]);
+	const statusOpacity = useTransform(scrollYProgress, [0, 0.2, 0.45], [1, 0.85, 0]);
 	const { data: portfolioData } = useQuery({
 		queryKey: ["portfolio"],
 		queryFn: fetchPortfolio,
@@ -257,52 +280,57 @@ const Index = () => {
 						transition={{ duration: 0.8 }}
 					>
 						<div className="mb-4 flex justify-center">
-							<span className="inline-block px-3 py-1 bg-primary/10 border border-primary/30 rounded text-primary text-xs font-mono mb-4">
+							<motion.span
+								style={{ y: paragraphY, opacity: paragraphOpacity }}
+								className="inline-block px-3 py-1 bg-primary/10 border border-primary/30 rounded text-primary text-xs font-mono mb-4"
+							>
 								{">"} System Status: Operational
-							</span>
+							</motion.span>
 						</div>
 
-						<h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight text-center">
-							Engineer your{" "}
-							<span className="text-primary glow-primary glitch-text">
-								Future
-							</span>
-						</h1>
+						<motion.h1 style={{ y: paragraphY, opacity: paragraphOpacity }} className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight text-center">
+							Engineer your {" "}
+							<span className="text-primary glow-primary glitch-text">Future</span>
+						</motion.h1>
 
-						<p className="text-lg md:text-xl text-muted-foreground mb-8 font-mono">
+						<motion.p style={{ y: paragraphY, opacity: paragraphOpacity }} className="text-lg md:text-xl text-muted-foreground mb-8 font-mono">
 							We build tech that actually behaves — from smart software to
 							hardware that doesn’t need emotional support. The world’s moving
 							forward; we’re just here to make sure you don’t get left behind.
-						</p>
+						</motion.p>
 
 						<div className="flex justify-center flex-wrap gap-4 mb-8">
-							<Button
-								size="lg"
-								className="bg-primary text-primary-foreground hover:bg-primary/90 glow-primary rounded-full"
-								asChild
-							>
-								<Link to="/wizard">Initialize Now</Link>
-							</Button>
-							<Button
-								size="lg"
-								variant="outline"
-								className="border-primary text-primary hover:bg-primary hover:text-primary-foreground rounded-full"
-								onClick={() => scrollToSection("about")}
-							>
-								About the Brains
-							</Button>
+							<motion.div style={{ y: paragraphY, opacity: paragraphOpacity }}>
+								<Button
+									size="lg"
+									className="bg-primary text-primary-foreground hover:bg-primary/90 glow-primary rounded-full"
+									asChild
+								>
+									<Link to="/wizard">Initialize Now</Link>
+								</Button>
+							</motion.div>
+							<motion.div style={{ y: paragraphY, opacity: paragraphOpacity }}>
+								<Button
+									size="lg"
+									variant="outline"
+									className="border-primary text-primary hover:bg-primary hover:text-primary-foreground rounded-full"
+									onClick={() => scrollToSection("about")}
+								>
+									About the Brains
+								</Button>
+							</motion.div>
 						</div>
 
 						<div className="flex items-center justify-center gap-4 text-sm text-muted-foreground font-mono">
-							<div className="flex items-center gap-2">
+							<motion.div style={{ y: paragraphY, opacity: paragraphOpacity }} className="flex items-center gap-2">
 								<div className="w-2 h-2 rounded-full bg-secondary" />
 								<span>30+ Projects</span>
-							</div>
+							</motion.div>
 							<span>|</span>
-							<div className="flex items-center gap-2">
+							<motion.div style={{ y: paragraphY, opacity: paragraphOpacity }} className="flex items-center gap-2">
 								<div className="w-2 h-2 rounded-full bg-primary" />
 								<span>20+ Clients</span>
-							</div>
+							</motion.div>
 						</div>
 					</motion.div>
 				</div>
