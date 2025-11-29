@@ -103,7 +103,8 @@ const Index = () => {
 	const [isLoaded, setIsLoaded] = useState(false);
 
 	useEffect(() => {
-		const timer = setTimeout(() => setIsLoaded(true), 2000);
+		// shorten the loading overlay timeout (ms)
+		const timer = setTimeout(() => setIsLoaded(true), 800);
 		return () => clearTimeout(timer);
 	}, []);
 	const [formData, setFormData] = useState({
@@ -222,7 +223,8 @@ const Index = () => {
 			>
 				<div className="text-white text-4xl md:text-6xl font-bold tracking-tighter overflow-hidden">
 					<motion.div initial={{ y: "100%" }} animate={{ y: "0%" }} transition={{ duration: 0.5, delay: 0.2 }}>
-						Extend IT
+						{/* Simple entrance title with subtle letter-spacing */}
+						<span style={{ letterSpacing: "0.03rem" }}>Extend IT</span>
 					</motion.div>
 				</div>
 			</motion.div>
@@ -276,7 +278,7 @@ const Index = () => {
 						<div className="flex justify-center flex-wrap gap-4 mb-8">
 							<Button
 								size="lg"
-								className="bg-primary text-primary-foreground hover:bg-primary/90 glow-primary"
+								className="bg-primary text-primary-foreground hover:bg-primary/90 glow-primary rounded-full"
 								asChild
 							>
 								<Link to="/wizard">Initialize Now</Link>
@@ -284,7 +286,7 @@ const Index = () => {
 							<Button
 								size="lg"
 								variant="outline"
-								className="border-primary text-primary hover:bg-primary hover:text-primary-foreground"
+								className="border-primary text-primary hover:bg-primary hover:text-primary-foreground rounded-full"
 								onClick={() => scrollToSection("about")}
 							>
 								About the Brains
@@ -673,7 +675,7 @@ const Index = () => {
 										<div className="flex gap-3">
 											<Button
 												size="sm"
-												className="flex-1 bg-primary text-primary-foreground hover:bg-primary/90 glow-primary"
+												className="flex-1 bg-primary text-primary-foreground hover:bg-primary/90 glow-primary rounded-full"
 												asChild
 											>
 												<a
@@ -688,7 +690,7 @@ const Index = () => {
 											<Button
 												size="sm"
 												variant="outline"
-												className="border-primary/30 text-primary hover:bg-primary/10"
+												className="border-primary/30 text-primary hover:bg-primary/10 rounded-full"
 												asChild
 											>
 												<a
@@ -736,7 +738,7 @@ const Index = () => {
 						</div>
 
 						<Card className="p-6 md:p-8 bg-card/50 backdrop-blur-xs border-primary/20 box-glow-primary">
-							<form onSubmit={handleSubmit} className="space-y-6">
+							<form onSubmit={handleSubmit} className="space-y-6 rounded-md">
 								<div className="grid md:grid-cols-2 gap-4">
 									<div>
 										<label
@@ -804,7 +806,7 @@ const Index = () => {
 										htmlFor="problem"
 										className="block text-sm font-mono mb-2 text-foreground"
 									>
-										{">"} What do you need in details?
+											{">"} What do you need in details?
 									</label>
 									<Textarea
 										id="problem"
@@ -821,7 +823,7 @@ const Index = () => {
 
 								<Button
 									type="submit"
-									className="w-full bg-primary text-primary-foreground hover:bg-primary/90 glow-primary"
+									className="w-full bg-primary text-primary-foreground hover:bg-primary/90 glow-primary rounded-full"
 								>
 									Send via WhatsApp
 								</Button>

@@ -24,14 +24,14 @@ const Terms = () => {
               className="rounded-full border-primary text-primary hover:bg-primary hover:text-primary-foreground"
               asChild
             >
-              <Link to="/">{"<"} Return Home</Link>
+              <Link to="/"> Return Home</Link>
             </Button>
           </div>
         </div>
       </nav>
 
       <main className="relative z-10 py-20 px-4 max-w-4xl mx-auto">
-        <Card className="p-8 md:p-12 bg-card/50 backdrop-blur-md border-primary/20 rounded-3xl">
+        <Card className="p-8 md:p-12 bg-card/50 backdrop-blur-md border-primary/20 rounded-2xl">
           <div className="max-w-none text-left">
             <h1 className="text-4xl md:text-5xl font-bold text-primary mb-2 tracking-tight">Terms and Conditions</h1>
             <p className="text-muted-foreground mb-12 font-mono text-sm">Last updated: November 2025</p>

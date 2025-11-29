@@ -24,7 +24,7 @@ const Privacy = () => {
               className="rounded-full border-primary text-primary hover:bg-primary hover:text-primary-foreground"
               asChild
             >
-              <Link to="/">{"<"} Return Home</Link>
+              <Link to="/"> Return Home</Link>
             </Button>
           </div>
         </div>
