@@ -20,7 +20,6 @@ import {
 } from "lucide-react";
 
 
-import Tilt from "react-parallax-tilt";
 import { BudgetEstimator } from "@/components/BudgetEstimator";
 import { CodeBackground } from "@/components/CodeBackground";
 import { Logo } from "@/components/Logo";
@@ -40,6 +39,7 @@ import { fetchPartners, fetchPortfolio, STRAPI_URL } from "@/lib/api";
 import { Link } from "react-router-dom";
 import { LoadingScreen } from "@/components/LoadingScreen";
 import { ParallaxCard } from "@/components/ParallaxCard";
+import Tilt from "react-parallax-tilt";
 
 const industries = {
 	"Technology & Digital": [
@@ -105,7 +105,7 @@ const Index = () => {
 
 	useEffect(() => {
 		// shorten the loading overlay timeout (ms)
-		const timer = setTimeout(() => setIsLoaded(true), 800);
+		const timer = setTimeout(() => setIsLoaded(true), 1400);
 		return () => clearTimeout(timer);
 	}, []);
 	const [formData, setFormData] = useState({
@@ -239,15 +239,31 @@ const Index = () => {
 
 			{/* Entrance / Loading Overlay */}
 			<motion.div
-				className="fixed inset-0 z-[9999] bg-black flex items-center justify-center"
-				initial={{ y: 0 }}
-				animate={{ y: isLoaded ? "-100%" : "0%" }}
+				className={`fixed inset-0 z-[9999] bg-black flex items-center justify-center ${isLoaded ? 'pointer-events-none' : ''}`}
+				initial={{ opacity: 1 }}
+				animate={{ opacity: isLoaded ? 0 : 1 }}
 				transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
+				aria-hidden={isLoaded}
 			>
 				<div className="text-white text-4xl md:text-6xl font-bold tracking-tighter overflow-hidden">
-					<motion.div initial={{ y: "100%" }} animate={{ y: "0%" }} transition={{ duration: 0.5, delay: 0.2 }}>
-						{/* Simple entrance title with subtle letter-spacing */}
-						<span style={{ letterSpacing: "0.03rem" }}>Extend IT</span>
+					<motion.div className="flex items-center justify-center gap-2" initial={{ opacity: 1 }} animate={{ opacity: 1 }} transition={{ duration: 0.01 }}>
+						{/* Fade sequence: Extend fades in, IT fades in, then both fade out */}
+						<motion.span
+							style={{ display: "inline-block", letterSpacing: "0.03rem", fontFamily: "Agrandir, 'Agrandir Variable', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial" }}
+							initial={{ opacity: 0 }}
+							animate={{ opacity: [0, 1, 1, 0] }}
+							transition={{ duration: 1.6, times: [0, 0.2, 0.6, 1], ease: "easeInOut" }}
+						>
+							Extend
+						</motion.span>
+						<motion.span
+							style={{ display: "inline-block", letterSpacing: "0.03rem", fontFamily: "Agrandir, 'Agrandir Variable', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial" }}
+							initial={{ opacity: 0 }}
+							animate={{ opacity: [0, 0, 1, 0] }}
+							transition={{ duration: 1.6, times: [0, 0.4, 0.6, 1], ease: "easeInOut" }}
+						>
+							&nbsp;IT
+						</motion.span>
 					</motion.div>
 				</div>
 			</motion.div>
@@ -256,11 +272,13 @@ const Index = () => {
 			<nav className="relative z-50 border-b border-border/50 bg-background/50 backdrop-blur-md">
 				   <div className="max-w-7xl mx-auto px-4 py-3">
 					   <div className="flex items-center justify-between">
-						   <div className="flex items-center gap-2 font-mono">
-							   <Logo className="h-16 md:-ml-4" />
-							   <span className="text-xs text-muted-foreground hidden md:inline">
-								   ~/projects/digital-future
-							   </span>
+						   <div className="flex items-center gap-2">
+							   <Logo className="text-2xl md:text-3xl lg:text-4xl" />
+							   <span className="text-xs text-muted-foreground hidden md:inline">~/projects/digital-future</span>
+						   </div>
+
+						   <div className="hidden md:flex items-center">
+							   <span className="text-sm text-primary font-mono">System Status: Operational</span>
 						   </div>
 					   </div>
 				   </div>
@@ -275,28 +293,22 @@ const Index = () => {
 
 				<div className="relative z-10 max-w-4xl mx-auto text-center">
 					<motion.div
-						initial={{ opacity: 0, y: 10 }}
-						animate={{ opacity: 1, y: 0 }}
+						initial={{ opacity: 0 }}
+						animate={{ opacity: 1 }}
 						transition={{ duration: 0.8 }}
 					>
-						<div className="mb-4 flex justify-center">
-							<motion.span
-								style={{ y: paragraphY, opacity: paragraphOpacity }}
-								className="inline-block px-3 py-1 bg-primary/10 border border-primary/30 rounded text-primary text-xs font-mono mb-4"
-							>
-								{">"} System Status: Operational
-							</motion.span>
-						</div>
+						{/* System Status removed from hero - now in header */}
 
 						<motion.h1 style={{ y: paragraphY, opacity: paragraphOpacity }} className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight text-center">
 							Engineer your {" "}
 							<span className="text-primary glow-primary glitch-text">Future</span>
 						</motion.h1>
 
-						<motion.p style={{ y: paragraphY, opacity: paragraphOpacity }} className="text-lg md:text-xl text-muted-foreground mb-8 font-mono">
-							We build tech that actually behaves — from smart software to
-							hardware that doesn’t need emotional support. The world’s moving
-							forward; we’re just here to make sure you don’t get left behind.
+						<motion.p
+							style={{ y: paragraphY, opacity: paragraphOpacity, fontFamily: "Agrandir, 'Agrandir Variable', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial", letterSpacing: "0.03rem" }}
+							className="text-lg md:text-xl text-muted-foreground mb-8"
+						>
+							Future-proof your operations. We develop cutting-edge, dependable technology that simply works. We craft intelligent software and resilient hardware, providing the rock-solid foundation you need to lead the industry.
 						</motion.p>
 
 						<div className="flex justify-center flex-wrap gap-4 mb-8">
@@ -321,17 +333,6 @@ const Index = () => {
 							</motion.div>
 						</div>
 
-						<div className="flex items-center justify-center gap-4 text-sm text-muted-foreground font-mono">
-							<motion.div style={{ y: paragraphY, opacity: paragraphOpacity }} className="flex items-center gap-2">
-								<div className="w-2 h-2 rounded-full bg-secondary" />
-								<span>30+ Projects</span>
-							</motion.div>
-							<span>|</span>
-							<motion.div style={{ y: paragraphY, opacity: paragraphOpacity }} className="flex items-center gap-2">
-								<div className="w-2 h-2 rounded-full bg-primary" />
-								<span>20+ Clients</span>
-							</motion.div>
-						</div>
 					</motion.div>
 				</div>
 
@@ -345,8 +346,8 @@ const Index = () => {
 			<section id="about" className="relative py-20 px-4">
 				<div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
 					<motion.div
-						initial={{ opacity: 0, y: 20 }}
-						whileInView={{ opacity: 1, y: 0 }}
+						initial={{ opacity: 0 }}
+						whileInView={{ opacity: 1 }}
 						viewport={{ once: true }}
 						transition={{ duration: 0.6 }}
 						className="text-left"
@@ -358,16 +359,19 @@ const Index = () => {
 							About the <span className="text-secondary glow-secondary">Brains</span>
 						</h2>
 						<p className="text-muted-foreground max-w-xl mb-4">
-							We’re a small team of engineers, designers, and product people who prefer clean interfaces, robust systems, and getting stuff done. We design and build products that last — no theatrical launches, just reliable features.
+							Established in 2020 — yes, we’ve been doing this long before “AI expert” became everyone’s LinkedIn title.
 						</p>
 						<p className="text-muted-foreground max-w-xl">
-							We focus on clarity and measurable outcomes: faster load times, fewer bugs, and features your users actually use. Want to see how we approach problems? Hit "Initialize Now" above and we’ll get to work.
+							We’re a dynamic tech company creating “innovative solutions” — except ours actually work. Real-world challenges? We solve them. Dramatically overcomplicated problems? We simplify them. And those “future-ready digital transformations” everyone keeps talking about? Yeah, we’ve been doing that while others were still figuring out how to unmute themselves on Zoom.
+						</p>
+						<p className="text-muted-foreground max-w-xl mt-4">
+							We’re your partners in digital transformation, whether you’re ready for it or still pretending your spreadsheet system is “fine.” Let’s build the future — or at least drag you into it.
 						</p>
 					</motion.div>
 
 					<motion.div
-						initial={{ opacity: 0, x: 20 }}
-						whileInView={{ opacity: 1, x: 0 }}
+						initial={{ opacity: 0 }}
+						whileInView={{ opacity: 1 }}
 						viewport={{ once: true }}
 						transition={{ duration: 0.6 }}
 						className="hidden lg:block"
@@ -379,7 +383,7 @@ const Index = () => {
 				</div>
 			</section>
 
-			{/* About Section */}
+			{/* About Section
 			<section
 				id="about"
 				className="relative min-h-screen flex items-center py-20 px-4 bg-linear-to-b from-background to-muted/20"
@@ -441,16 +445,16 @@ const Index = () => {
 						</div>
 					</motion.div>
 				</div>
-			</section>
+			</section> */}
 
 			{/* Services Section */}
 			<section id="services" className="relative py-20 px-4">
 				<div className="max-w-7xl mx-auto">
 					<motion.div
-						initial={{ opacity: 0, y: 20 }}
-						whileInView={{ opacity: 1, y: 0 }}
-						viewport={{ once: true }}
-						transition={{ duration: 0.6 }}
+				initial={{ opacity: 0 }}
+				whileInView={{ opacity: 1 }}
+				viewport={{ once: true }}
+				transition={{ duration: 0.6 }}
 						className="mb-12"
 					>
 						<span className="text-primary font-mono text-sm glow-primary">
@@ -474,13 +478,14 @@ const Index = () => {
 						{services.map((service, index) => (
 							<motion.div
 								key={index}
+								className="h-full"
 								initial={{ opacity: 0, y: 20 }}
 								whileInView={{ opacity: 1, y: 0 }}
 								viewport={{ once: true }}
 								transition={{ duration: 0.5, delay: index * 0.1 }}
 							>
 								<ParallaxCard className="h-full">
-									<Card className="p-6 h-full bg-card/50 backdrop-blur-sm border-border hover:border-primary/50 transition-all duration-300 group cursor-pointer flex flex-col">
+									<Card className="p-6 h-full min-h-[250px] md:min-h-[290px] lg:min-h-[310px] bg-card/50 backdrop-blur-sm border-border hover:border-primary/50 transition-all duration-300 group cursor-pointer flex flex-col">
 										<div className="flex-1">
 											<div className="mb-4">
 												<div className="w-12 h-12 rounded bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
@@ -523,10 +528,10 @@ const Index = () => {
 			<section className="relative py-20 px-4 bg-linear-to-b from-transparent to-muted/20">
 				<div className="max-w-6xl mx-auto">
 					<motion.div
-						initial={{ opacity: 0, y: 20 }}
-						whileInView={{ opacity: 1, y: 0 }}
-						viewport={{ once: true }}
-						transition={{ duration: 0.6 }}
+				initial={{ opacity: 0 }}
+				whileInView={{ opacity: 1 }}
+				viewport={{ once: true }}
+				transition={{ duration: 0.6 }}
 						className="text-center mb-12"
 					>
 						<span className="text-primary font-mono text-sm glow-primary">
@@ -621,10 +626,10 @@ const Index = () => {
 			<section className="relative py-20 px-4">
 				<div className="max-w-7xl mx-auto">
 					<motion.div
-						initial={{ opacity: 0, y: 20 }}
-						whileInView={{ opacity: 1, y: 0 }}
-						viewport={{ once: true }}
-						transition={{ duration: 0.6 }}
+				initial={{ opacity: 0 }}
+				whileInView={{ opacity: 1 }}
+				viewport={{ once: true }}
+				transition={{ duration: 0.6 }}
 						className="mb-12"
 					>
 						<span className="text-primary font-mono text-sm glow-primary">
@@ -742,7 +747,7 @@ const Index = () => {
 			{/* <BudgetEstimator /> */}
 
 			{/* Contact Section */}
-			<section id="contact" className="relative py-20 px-4">
+			{/* <section id="contact" className="relative py-20 px-4">
 				<div className="max-w-4xl mx-auto">
 					<motion.div
 						initial={{ opacity: 0, y: 20 }}
@@ -859,7 +864,7 @@ const Index = () => {
 						</Card>
 					</motion.div>
 				</div>
-			</section>
+			</section> */}
 
 			{/* Footer */}
 			<footer className="relative border-t border-border/50 bg-muted/20 py-8 px-4">

@@ -1,24 +1,12 @@
-import { useState } from "react";
+import React from "react";
 
-export const Logo = ({ className = "h-6 w-auto" }: { className?: string }) => {
-  const [errored, setErrored] = useState(false);
-
-  if (errored) {
-    return (
-      <span className={`font-mono ${className} inline-flex items-center`}>
-        {"<"}
-        <span className="text-primary font-bold">Extend IT</span>
-        {" />"}
-      </span>
-    );
-  }
-
+export const Logo = ({ className = "text-lg font-extrabold" }: { className?: string }) => {
   return (
-    <img
-      src="/logo.png"
-      alt="Extend IT"
-      className={className}
-      onError={() => setErrored(true)}
-    />
+    <span
+      className={`inline-flex items-center ${className}`}
+      style={{ fontFamily: "Agrandir, 'Agrandir Variable', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial" }}
+    >
+      <span className="text-white" style={{ letterSpacing: "0.03rem" }}>Extend IT</span>
+    </span>
   );
 };
