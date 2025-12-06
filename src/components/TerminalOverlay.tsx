@@ -1,18 +1,18 @@
 import { useEffect, useState } from "react";
 
 const terminalLines = [
-	"$ npm run dev",
-	"> extend-it@1.0.0 dev",
-	"> vite",
+	"$ mysql -u root -p",
+	"> extend_it@1.0.0 sql",
+	"> mysql",
 	"",
-	"  VITE v5.0.0  ready in 342 ms",
+	"  SELECT COUNT(*) FROM Projects;    -- running...",
+	"  Result: 20",
 	"",
-	"  ➜  Local:   http://localhost:8080/",
-	"  ➜  Network: use --host to expose",
+	"  SELECT COUNT(*) FROM Clients;     -- running...",
+	"  Result: 10",
 	"",
-	"  ➜  press h + enter to show help",
-	"✓ Connected to Extend IT services",
-	"✓ AI modules loaded",
+	"✓ Connected to Extend IT database",
+	"✓ Query executed successfully",
 	"✓ System ready",
 ];
 

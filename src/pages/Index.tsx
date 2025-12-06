@@ -17,6 +17,7 @@ import {
 	Mail,
 	Palette,
 	TrendingUp,
+	ArrowRight,
 } from "lucide-react";
 
 
@@ -245,7 +246,7 @@ const Index = () => {
 				transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
 				aria-hidden={isLoaded}
 			>
-				<div className="text-white text-4xl md:text-6xl font-bold tracking-tighter overflow-hidden">
+				<div className="text-primary text-4xl md:text-6xl font-bold tracking-tighter overflow-hidden">
 					<motion.div className="flex items-center justify-center gap-2" initial={{ opacity: 1 }} animate={{ opacity: 1 }} transition={{ duration: 0.01 }}>
 						{/* Fade sequence: Extend fades in, IT fades in, then both fade out */}
 						<motion.span
@@ -277,8 +278,19 @@ const Index = () => {
 							   <span className="text-xs text-muted-foreground hidden md:inline">~/projects/digital-future</span>
 						   </div>
 
-						   <div className="hidden md:flex items-center">
-							   <span className="text-sm text-primary font-mono">System Status: Operational</span>
+						   <div className="hidden md:flex items-center gap-6">
+							   <span className="text-sm text-muted-foreground font-mono">System Status: Operational</span>
+							   <div className="flex items-center gap-4 text-primary">
+								   <a href="#" className="hover:text-primary/80 transition-colors">
+									   <Github className="w-5 h-5" />
+								   </a>
+								   <a href="#" className="hover:text-primary/80 transition-colors">
+									   <Linkedin className="w-5 h-5" />
+								   </a>
+								   <a href="#" className="hover:text-primary/80 transition-colors">
+									   <Instagram className="w-5 h-5" />
+								   </a>
+							   </div>
 						   </div>
 					   </div>
 				   </div>
@@ -370,8 +382,8 @@ const Index = () => {
 					</motion.div>
 
 					<motion.div
-						initial={{ opacity: 0 }}
-						whileInView={{ opacity: 1 }}
+						initial={{ opacity: 0, x: 20 }}
+						whileInView={{ opacity: 1, x: 0 }}
 						viewport={{ once: true }}
 						transition={{ duration: 0.6 }}
 						className="hidden lg:block"
@@ -451,10 +463,10 @@ const Index = () => {
 			<section id="services" className="relative py-20 px-4">
 				<div className="max-w-7xl mx-auto">
 					<motion.div
-				initial={{ opacity: 0 }}
-				whileInView={{ opacity: 1 }}
-				viewport={{ once: true }}
-				transition={{ duration: 0.6 }}
+						initial={{ opacity: 0, y: 20 }}
+						whileInView={{ opacity: 1, y: 0 }}
+						viewport={{ once: true }}
+						transition={{ duration: 0.6 }}
 						className="mb-12"
 					>
 						<span className="text-primary font-mono text-sm glow-primary">
@@ -746,6 +758,42 @@ const Index = () => {
 			{/* Budget Estimator */}
 			{/* <BudgetEstimator /> */}
 
+			{/* Wizard Connector Section */}
+			<section className="relative py-20 px-4">
+				<div className="max-w-4xl mx-auto">
+					<motion.div
+						initial={{ opacity: 0, y: 20 }}
+						whileInView={{ opacity: 1, y: 0 }}
+						viewport={{ once: true }}
+						transition={{ duration: 0.6 }}
+					>
+						<Card className="relative overflow-hidden p-8 md:p-12 bg-card/10 backdrop-blur-md border-primary/20 box-glow-primary text-center group">
+							{/* Decorative background elements */}
+							<div className="absolute inset-0 bg-linear-to-b from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+							
+							<h2 className="relative z-10 text-3xl md:text-4xl font-bold mb-4">
+								Ready to <span className="text-primary glow-primary">Compile</span> Your Vision?
+							</h2>
+							<p className="relative z-10 text-muted-foreground mb-8 max-w-2xl mx-auto text-lg">
+								Launch the project wizard to define your requirements and generate a preliminary estimate.
+							</p>
+							
+							<div className="relative z-10">
+								<Button
+									size="lg"
+									className="bg-primary text-primary-foreground hover:bg-primary/90 glow-primary rounded-full text-lg px-8 py-6"
+									asChild
+								>
+									<Link to="/wizard">
+										Initialize Project <ArrowRight className="ml-2 w-5 h-5" />
+									</Link>
+								</Button>
+							</div>
+						</Card>
+					</motion.div>
+				</div>
+			</section>
+
 			{/* Contact Section */}
 			{/* <section id="contact" className="relative py-20 px-4">
 				<div className="max-w-4xl mx-auto">
@@ -877,18 +925,6 @@ const Index = () => {
 							<p className="text-xs text-muted-foreground mt-1">
 								Architects of the Digital Future
 							</p>
-						</div>
-
-						<div className="flex items-center gap-6 text-sm text-muted-foreground font-mono">
-							<a href="#" className="hover:text-primary transition-colors">
-								<Github className="w-5 h-5" />
-							</a>
-							<a href="#" className="hover:text-primary transition-colors">
-								<Linkedin className="w-5 h-5" />
-							</a>
-							<a href="#" className="hover:text-primary transition-colors">
-								<Instagram className="w-5 h-5" />
-							</a>
 						</div>
 					</div>
 
