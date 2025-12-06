@@ -6,7 +6,7 @@ RUN mkdir -p ${DIR}
 
 WORKDIR /${DIR}
 COPY package*.json ./
-COPY bun.lockb ./
+COPY bun.lock ./
 
 RUN bun install --frozen-lockfile
 COPY . ./

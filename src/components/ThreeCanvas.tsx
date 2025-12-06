@@ -4,9 +4,10 @@ import { Button } from "@/components/ui/button";
 
 interface ThreeCanvasProps {
 	className?: string;
+	theme?: "dark" | "light";
 }
 
-export const ThreeCanvas = ({ className = "" }: ThreeCanvasProps) => {
+export const ThreeCanvas = ({ className = "", theme = "dark" }: ThreeCanvasProps) => {
 	const canvasRef = useRef<HTMLDivElement>(null);
 	const [isPaused, setIsPaused] = useState(false);
 	const [useFallback, setUseFallback] = useState(false);
@@ -36,7 +37,9 @@ export const ThreeCanvas = ({ className = "" }: ThreeCanvasProps) => {
 
 		// Setup scene
 		const scene = new THREE.Scene();
-		scene.fog = new THREE.FogExp2(0x0a0a0f, 0.05);
+		// Adjust fog based on theme
+		const fogColor = theme === "light" ? 0xffffff : 0x0a0a0f;
+		scene.fog = new THREE.FogExp2(fogColor, 0.05);
 
 		const camera = new THREE.PerspectiveCamera(
 			75,
@@ -63,9 +66,14 @@ export const ThreeCanvas = ({ className = "" }: ThreeCanvasProps) => {
 		const nodeCount = 30;
 		const nodeGeometry = new THREE.SphereGeometry(0.15, 16, 16);
 
+		// Colors based on theme
+		const colors = theme === "light" 
+			? [0x2563eb, 0x7c3aed, 0x4b5563] // Blue, Violet, Gray
+			: [0x00d9ff, 0x00ff88, 0xffb86c]; // Cyan, Green, Orange
+
 		for (let i = 0; i < nodeCount; i++) {
 			const nodeMaterial = new THREE.MeshBasicMaterial({
-				color: i % 3 === 0 ? 0x00d9ff : i % 3 === 1 ? 0x00ff88 : 0xffb86c,
+				color: colors[i % 3],
 				transparent: true,
 				opacity: 0.8,
 			});
@@ -93,10 +101,11 @@ export const ThreeCanvas = ({ className = "" }: ThreeCanvasProps) => {
 
 		// Create connecting lines
 		const lines: THREE.Line[] = [];
+		const lineColor = theme === "light" ? 0x94a3b8 : 0x00d9ff;
 		const lineMaterial = new THREE.LineBasicMaterial({
-			color: 0x00d9ff,
+			color: lineColor,
 			transparent: true,
-			opacity: 0.2,
+			opacity: theme === "light" ? 0.15 : 0.2,
 		});
 
 		for (let i = 0; i < nodes.length; i++) {
@@ -140,9 +149,9 @@ export const ThreeCanvas = ({ className = "" }: ThreeCanvasProps) => {
 				animationId = requestAnimationFrame(animate);
 
 				// Rotate scene based on mouse and tilt
-				scene.rotation.y += (mouse.x * 0.1 - scene.rotation.y) * 0.05;
+				scene.rotation.y += (mouse.x * 0.02 - scene.rotation.y) * 0.05;
 				scene.rotation.x +=
-					(-mouse.y * 0.1 + tilt.y * 0.2 - scene.rotation.x) * 0.05;
+					(-mouse.y * 0.02 + tilt.y * 0.05 - scene.rotation.x) * 0.05;
 
 				// Animate nodes
 				nodes.forEach((node, i) => {

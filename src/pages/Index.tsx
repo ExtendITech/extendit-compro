@@ -1,5 +1,7 @@
+import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
+
 import {
 	BookOpen,
 	Calculator,
@@ -15,9 +17,10 @@ import {
 	Mail,
 	Palette,
 	TrendingUp,
+	ArrowRight,
 } from "lucide-react";
-import { useState } from "react";
-import Tilt from "react-parallax-tilt";
+
+
 import { BudgetEstimator } from "@/components/BudgetEstimator";
 import { CodeBackground } from "@/components/CodeBackground";
 import { Logo } from "@/components/Logo";
@@ -34,6 +37,10 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { fetchPartners, fetchPortfolio, STRAPI_URL } from "@/lib/api";
+import { Link } from "react-router-dom";
+import { LoadingScreen } from "@/components/LoadingScreen";
+import { ParallaxCard } from "@/components/ParallaxCard";
+import Tilt from "react-parallax-tilt";
 
 const industries = {
 	"Technology & Digital": [
@@ -95,6 +102,13 @@ const industries = {
 };
 
 const Index = () => {
+	const [isLoaded, setIsLoaded] = useState(false);
+
+	useEffect(() => {
+		// shorten the loading overlay timeout (ms)
+		const timer = setTimeout(() => setIsLoaded(true), 1400);
+		return () => clearTimeout(timer);
+	}, []);
 	const [formData, setFormData] = useState({
 		category: "",
 		subCategory: "",
@@ -108,6 +122,28 @@ const Index = () => {
 		}
 	};
 
+	// scroll-linked motion values
+	const { scrollYProgress } = useScroll();
+
+	// Make the TITLE move in sync with other hero elements (same timing/magnitude)
+	const titleY = useTransform(scrollYProgress, [0, 0.45], [0, -1500]);
+	// Paragraph: much faster and farther
+	const paragraphY = useTransform(scrollYProgress, [0, 0.5], [0, -1400]);
+	// Buttons: fastest among the non-title elements
+	const btnLeftY = useTransform(scrollYProgress, [0, 0.45], [0, -1500]);
+	const btnRightY = useTransform(scrollYProgress, [0, 0.45], [0, -1500]);
+	// Stats: faster than title but slightly less extreme than buttons
+	const statsLeftY = useTransform(scrollYProgress, [0, 0.45], [0, -1100]);
+	const statsRightY = useTransform(scrollYProgress, [0, 0.45], [0, -1100]);
+
+	// Opacity: title fades later; others fade earlier and quicker
+	const titleOpacity = useTransform(scrollYProgress, [0, 0.2, 0.45], [1, 0.85, 0]);
+	const paragraphOpacity = useTransform(scrollYProgress, [0, 0.25, 0.5], [1, 0.8, 0]);
+	const btnOpacity = useTransform(scrollYProgress, [0, 0.2, 0.45], [1, 0.85, 0]);
+	const statsOpacity = useTransform(scrollYProgress, [0, 0.2, 0.45], [1, 0.85, 0]);
+	// System Status should move with the buttons' cadence
+	const statusY = useTransform(scrollYProgress, [0, 0.45], [0, -1500]);
+	const statusOpacity = useTransform(scrollYProgress, [0, 0.2, 0.45], [1, 0.85, 0]);
 	const { data: portfolioData } = useQuery({
 		queryKey: ["portfolio"],
 		queryFn: fetchPortfolio,
@@ -202,36 +238,63 @@ const Index = () => {
 		<div className="relative min-h-screen bg-background text-foreground overflow-x-hidden theme-apple scrollbar-none">
 			<CodeBackground />
 
+			{/* Entrance / Loading Overlay */}
+			<motion.div
+				className={`fixed inset-0 z-[9999] bg-black flex items-center justify-center ${isLoaded ? 'pointer-events-none' : ''}`}
+				initial={{ opacity: 1 }}
+				animate={{ opacity: isLoaded ? 0 : 1 }}
+				transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
+				aria-hidden={isLoaded}
+			>
+				<div className="text-primary text-4xl md:text-6xl font-bold tracking-tighter overflow-hidden">
+					<motion.div className="flex items-center justify-center gap-2" initial={{ opacity: 1 }} animate={{ opacity: 1 }} transition={{ duration: 0.01 }}>
+						{/* Fade sequence: Extend fades in, IT fades in, then both fade out */}
+						<motion.span
+							style={{ display: "inline-block", letterSpacing: "0.03rem", fontFamily: "Agrandir, 'Agrandir Variable', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial" }}
+							initial={{ opacity: 0 }}
+							animate={{ opacity: [0, 1, 1, 0] }}
+							transition={{ duration: 1.6, times: [0, 0.2, 0.6, 1], ease: "easeInOut" }}
+						>
+							Extend
+						</motion.span>
+						<motion.span
+							style={{ display: "inline-block", letterSpacing: "0.03rem", fontFamily: "Agrandir, 'Agrandir Variable', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial" }}
+							initial={{ opacity: 0 }}
+							animate={{ opacity: [0, 0, 1, 0] }}
+							transition={{ duration: 1.6, times: [0, 0.4, 0.6, 1], ease: "easeInOut" }}
+						>
+							&nbsp;IT
+						</motion.span>
+					</motion.div>
+				</div>
+			</motion.div>
+
 			{/* Navigation */}
 			<nav className="relative z-50 border-b border-border/50 bg-background/50 backdrop-blur-md">
-				<div className="max-w-7xl mx-auto px-4 py-3">
-					<div className="flex items-center justify-between">
-						<div className="flex items-center gap-2 font-mono">
-							<Logo className="h-16 md:-ml-4" />
-							<span className="text-xs text-muted-foreground hidden md:inline">
-								~/projects/digital-future
-							</span>
-						</div>
-						<div className="flex items-center gap-4">
-							<div className="hidden md:flex items-center gap-2 text-xs">
-								<div className="flex items-center gap-1.5">
-									<span className="w-2 h-2 rounded-full bg-secondary animate-pulse" />
-									<span className="text-secondary">Live</span>
-								</div>
-								<span className="text-muted-foreground">|</span>
-								<span className="text-muted-foreground">Build: #1247</span>
-							</div>
-							<Button
-								size="sm"
-								className="bg-primary text-primary-foreground hover:bg-primary/90 glow-primary"
-								onClick={() => scrollToSection("contact")}
-							>
-								Get Started
-							</Button>
-						</div>
-					</div>
-				</div>
-			</nav>
+				   <div className="max-w-7xl mx-auto px-4 py-3">
+					   <div className="flex items-center justify-between">
+						   <div className="flex items-center gap-2">
+							   <Logo className="text-2xl md:text-3xl lg:text-4xl" />
+							   <span className="text-xs text-muted-foreground hidden md:inline">~/projects/digital-future</span>
+						   </div>
+
+						   <div className="hidden md:flex items-center gap-6">
+							   <span className="text-sm text-muted-foreground font-mono">System Status: Operational</span>
+							   <div className="flex items-center gap-4 text-primary">
+								   <a href="#" className="hover:text-primary/80 transition-colors">
+									   <Github className="w-5 h-5" />
+								   </a>
+								   <a href="#" className="hover:text-primary/80 transition-colors">
+									   <Linkedin className="w-5 h-5" />
+								   </a>
+								   <a href="#" className="hover:text-primary/80 transition-colors">
+									   <Instagram className="w-5 h-5" />
+								   </a>
+							   </div>
+						   </div>
+					   </div>
+				   </div>
+		   </nav>
 
 			{/* Hero Section */}
 			<section className="relative min-h-screen flex items-center justify-center px-4 py-20">
@@ -240,79 +303,99 @@ const Index = () => {
 					<div className="absolute inset-0 bg-linear-to-b from-transparent via-background/50 to-background" />
 				</div>
 
-				<div className="relative z-10 max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
+				<div className="relative z-10 max-w-4xl mx-auto text-center">
 					<motion.div
-						initial={{ opacity: 0, x: -50 }}
-						animate={{ opacity: 1, x: 0 }}
+						initial={{ opacity: 0 }}
+						animate={{ opacity: 1 }}
 						transition={{ duration: 0.8 }}
 					>
-						<div className="mb-4">
-							<span className="inline-block px-3 py-1 bg-primary/10 border border-primary/30 rounded text-primary text-xs font-mono mb-4">
-								{">"} System Status: Operational
-							</span>
+						{/* System Status removed from hero - now in header */}
+
+						<motion.h1 style={{ y: paragraphY, opacity: paragraphOpacity }} className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight text-center">
+							Engineer your {" "}
+							<span className="text-primary glow-primary glitch-text">Future</span>
+						</motion.h1>
+
+						<motion.p
+							style={{ y: paragraphY, opacity: paragraphOpacity, fontFamily: "Agrandir, 'Agrandir Variable', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial", letterSpacing: "0.03rem" }}
+							className="text-lg md:text-xl text-muted-foreground mb-8"
+						>
+							Future-proof your operations. We develop cutting-edge, dependable technology that simply works. We craft intelligent software and resilient hardware, providing the rock-solid foundation you need to lead the industry.
+						</motion.p>
+
+						<div className="flex justify-center flex-wrap gap-4 mb-8">
+							<motion.div style={{ y: paragraphY, opacity: paragraphOpacity }}>
+								<Button
+									size="lg"
+									className="bg-primary text-primary-foreground hover:bg-primary/90 glow-primary rounded-full"
+									asChild
+								>
+									<Link to="/wizard">Initialize Now</Link>
+								</Button>
+							</motion.div>
+							<motion.div style={{ y: paragraphY, opacity: paragraphOpacity }}>
+								<Button
+									size="lg"
+									variant="outline"
+									className="border-primary text-primary hover:bg-primary hover:text-primary-foreground rounded-full"
+									onClick={() => scrollToSection("about")}
+								>
+									About the Brains
+								</Button>
+							</motion.div>
 						</div>
 
-						<h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
-							Engineer your{" "}
-							<span className="text-primary glow-primary glitch-text">
-								Future
-							</span>
-						</h1>
-
-						<p className="text-lg md:text-xl text-muted-foreground mb-8 font-mono">
-							We build tech that actually behaves — from smart software to
-							hardware that doesn’t need emotional support. The world’s moving
-							forward; we’re just here to make sure you don’t get left behind.
-						</p>
-
-						<div className="flex flex-wrap gap-4 mb-8">
-							<Button
-								size="lg"
-								className="bg-primary text-primary-foreground hover:bg-primary/90 glow-primary"
-								onClick={() => scrollToSection("contact")}
-							>
-								Initialize Now
-							</Button>
-							<Button
-								size="lg"
-								variant="outline"
-								className="border-primary text-primary hover:bg-primary hover:text-primary-foreground"
-								onClick={() => scrollToSection("about")}
-							>
-								About the Brains
-							</Button>
-						</div>
-
-						<div className="flex items-center gap-4 text-sm text-muted-foreground font-mono">
-							<div className="flex items-center gap-2">
-								<div className="w-2 h-2 rounded-full bg-secondary" />
-								<span>30+ Projects</span>
-							</div>
-							<span>|</span>
-							<div className="flex items-center gap-2">
-								<div className="w-2 h-2 rounded-full bg-primary" />
-								<span>20+ Clients</span>
-							</div>
-						</div>
-					</motion.div>
-
-					<motion.div
-						initial={{ opacity: 0, x: 50 }}
-						animate={{ opacity: 1, x: 0 }}
-						transition={{ duration: 0.8, delay: 0.2 }}
-						className="hidden lg:block"
-					>
-						<TerminalOverlay />
 					</motion.div>
 				</div>
 
 				{/* Scan line effect */}
 				<div className="absolute inset-0 pointer-events-none z-20">
-					<div className="scan-line absolute w-full h-px bg-linear-to-r from-transparent via-primary/30 to-transparent" />
+					<div className="scan-line absolute w-full h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
 				</div>
 			</section>
 
-			{/* About Section */}
+			{/* About Section (Terminal moved here for large screens) */}
+			<section id="about" className="relative py-20 px-4">
+				<div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
+					<motion.div
+						initial={{ opacity: 0 }}
+						whileInView={{ opacity: 1 }}
+						viewport={{ once: true }}
+						transition={{ duration: 0.6 }}
+						className="text-left"
+					>
+						<span className="text-primary font-mono text-sm glow-primary">
+							$ cat about.md
+						</span>
+						<h2 className="text-3xl md:text-4xl font-bold mt-2 mb-4">
+							About the <span className="text-secondary glow-secondary">Brains</span>
+						</h2>
+						<p className="text-muted-foreground max-w-xl mb-4">
+							Established in 2020 — yes, we’ve been doing this long before “AI expert” became everyone’s LinkedIn title.
+						</p>
+						<p className="text-muted-foreground max-w-xl">
+							We’re a dynamic tech company creating “innovative solutions” — except ours actually work. Real-world challenges? We solve them. Dramatically overcomplicated problems? We simplify them. And those “future-ready digital transformations” everyone keeps talking about? Yeah, we’ve been doing that while others were still figuring out how to unmute themselves on Zoom.
+						</p>
+						<p className="text-muted-foreground max-w-xl mt-4">
+							We’re your partners in digital transformation, whether you’re ready for it or still pretending your spreadsheet system is “fine.” Let’s build the future — or at least drag you into it.
+						</p>
+					</motion.div>
+
+					<motion.div
+						initial={{ opacity: 0, x: 20 }}
+						whileInView={{ opacity: 1, x: 0 }}
+						viewport={{ once: true }}
+						transition={{ duration: 0.6 }}
+						className="hidden lg:block"
+					>
+						<ParallaxCard>
+							<TerminalOverlay />
+						</ParallaxCard>
+					</motion.div>
+				</div>
+			</section>
+
+			{/* About Section
 			<section
 				id="about"
 				className="relative min-h-screen flex items-center py-20 px-4 bg-linear-to-b from-background to-muted/20"
@@ -374,7 +457,7 @@ const Index = () => {
 						</div>
 					</motion.div>
 				</div>
-			</section>
+			</section> */}
 
 			{/* Services Section */}
 			<section id="services" className="relative py-20 px-4">
@@ -407,43 +490,46 @@ const Index = () => {
 						{services.map((service, index) => (
 							<motion.div
 								key={index}
+								className="h-full"
 								initial={{ opacity: 0, y: 20 }}
 								whileInView={{ opacity: 1, y: 0 }}
 								viewport={{ once: true }}
 								transition={{ duration: 0.5, delay: index * 0.1 }}
 							>
-								<Card className="p-6 h-full bg-card/50 backdrop-blur-xs border-border hover:border-primary/50 transition-all duration-300 hover:box-glow-primary group cursor-pointer flex flex-col">
-									<div className="flex-1">
-										<div className="mb-4">
-											<div className="w-12 h-12 rounded bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
-												<service.icon className="w-6 h-6 text-primary" />
+								<ParallaxCard className="h-full">
+									<Card className="p-6 h-full min-h-[250px] md:min-h-[290px] lg:min-h-[310px] bg-card/50 backdrop-blur-sm border-border hover:border-primary/50 transition-all duration-300 group cursor-pointer flex flex-col">
+										<div className="flex-1">
+											<div className="mb-4">
+												<div className="w-12 h-12 rounded bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
+													<service.icon className="w-6 h-6 text-primary" />
+												</div>
+												<h3 className="text-xl font-bold mb-2 group-hover:text-primary transition-colors">
+													{service.title}
+												</h3>
 											</div>
-											<h3 className="text-xl font-bold mb-2 group-hover:text-primary transition-colors">
-												{service.title}
-											</h3>
-										</div>
-										<p className="text-muted-foreground mb-4 text-sm">
-											{service.description}
-										</p>
-									</div>
-									<div className="mt-auto">
-										{service.tagLabel && (
-											<p className="text-xs font-mono text-primary mb-2 opacity-80">
-												{service.tagLabel}
+											<p className="text-muted-foreground mb-4 text-sm">
+												{service.description}
 											</p>
-										)}
-										<div className="flex flex-wrap gap-2">
-											{service.tags.map((tag, i) => (
-												<span
-													key={i}
-													className="text-xs px-2 py-1 bg-muted rounded font-mono text-muted-foreground"
-												>
-													{tag}
-												</span>
-											))}
 										</div>
-									</div>
-								</Card>
+										<div className="mt-auto">
+											{service.tagLabel && (
+												<p className="text-xs font-mono text-primary mb-2 opacity-80">
+													{service.tagLabel}
+												</p>
+											)}
+											<div className="flex flex-wrap gap-2">
+												{service.tags.map((tag, i) => (
+													<span
+														key={i}
+														className="text-xs px-2 py-1 bg-muted rounded font-mono text-muted-foreground"
+													>
+														{tag}
+													</span>
+												))}
+											</div>
+										</div>
+									</Card>
+								</ParallaxCard>
 							</motion.div>
 						))}
 					</div>
@@ -454,10 +540,10 @@ const Index = () => {
 			<section className="relative py-20 px-4 bg-linear-to-b from-transparent to-muted/20">
 				<div className="max-w-6xl mx-auto">
 					<motion.div
-						initial={{ opacity: 0, y: 20 }}
-						whileInView={{ opacity: 1, y: 0 }}
-						viewport={{ once: true }}
-						transition={{ duration: 0.6 }}
+				initial={{ opacity: 0 }}
+				whileInView={{ opacity: 1 }}
+				viewport={{ once: true }}
+				transition={{ duration: 0.6 }}
 						className="text-center mb-12"
 					>
 						<span className="text-primary font-mono text-sm glow-primary">
@@ -481,31 +567,29 @@ const Index = () => {
 									ease: "linear",
 								}}
 							>
-								{[...firstRow, ...firstRow, ...firstRow, ...firstRow].map(
-									(partner, index) => (
-										<div key={`row1-${index}`} className="w-[240px] shrink-0">
-											<Tilt
-												tiltMaxAngleX={10}
-												tiltMaxAngleY={10}
-												perspective={1000}
-												scale={1.05}
-												className="h-full"
-											>
-												<div className="relative h-40 flex items-center justify-center p-8 bg-white/5 backdrop-blur-xs rounded-xl border border-white/10 group cursor-pointer overflow-hidden">
-													{/* Neon Circuit Effect */}
-													<div className="absolute inset-0 bg-linear-to-r from-transparent via-primary/20 to-transparent -translate-x-full group-hover:animate-shimmer" />
-													<div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 border-2 border-primary/50 rounded-xl box-glow-primary" />
-
-													<img
-														src={partner.logo}
-														alt={partner.name}
-														className="max-h-full max-w-full object-contain grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300 filter relative z-10"
-													/>
-												</div>
-											</Tilt>
-										</div>
-									),
-								)}
+								{[...firstRow, ...firstRow, ...firstRow, ...firstRow].map((partner, index) => (
+									<div key={`row1-${index}`} className="w-[240px] flex-shrink-0">
+										<Tilt
+											tiltMaxAngleX={2.5}
+											tiltMaxAngleY={2.5}
+											perspective={1000}
+											scale={1.02}
+											className="h-full"
+										>
+											<div className="relative h-40 flex items-center justify-center p-8 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 group cursor-pointer overflow-hidden">
+												{/* Neon Circuit Effect */}
+												<div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/20 to-transparent translate-x-[-100%] group-hover:animate-shimmer" />
+												<div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 border-2 border-primary/50 rounded-xl box-glow-primary" />
+												
+												<img
+													src={partner.logo}
+													alt={partner.name}
+													className="max-h-full max-w-full object-contain grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300 filter relative z-10"
+												/>
+											</div>
+										</Tilt>
+									</div>
+								))}
 							</motion.div>
 						</div>
 
@@ -520,27 +604,26 @@ const Index = () => {
 									ease: "linear",
 								}}
 							>
-								{[...secondRow, ...secondRow, ...secondRow, ...secondRow].map(
-									(partner, index) => (
-										<div key={`row2-${index}`} className="w-[240px] shrink-0">
-											<Tilt
-												tiltMaxAngleX={10}
-												tiltMaxAngleY={10}
-												perspective={1000}
-												scale={1.05}
-												className="h-full"
-											>
-												<div className="relative h-40 flex items-center justify-center p-8 bg-white/5 backdrop-blur-xs rounded-xl border border-white/10 group cursor-pointer overflow-hidden">
-													{/* Neon Circuit Effect */}
-													<div className="absolute inset-0 bg-linear-to-r from-transparent via-primary/20 to-transparent -translate-x-full group-hover:animate-shimmer" />
-													<div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 border-2 border-primary/50 rounded-xl box-glow-primary" />
+								{[...secondRow, ...secondRow, ...secondRow, ...secondRow].map((partner, index) => (
+									<div key={`row2-${index}`} className="w-[240px] flex-shrink-0">
+										<Tilt
+											tiltMaxAngleX={2.5}
+											tiltMaxAngleY={2.5}
+											perspective={1000}
+											scale={1.02}
+											className="h-full"
+										>
+											<div className="relative h-40 flex items-center justify-center p-8 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 group cursor-pointer overflow-hidden">
+												{/* Neon Circuit Effect */}
+												<div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/20 to-transparent translate-x-[-100%] group-hover:animate-shimmer" />
+												<div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 border-2 border-primary/50 rounded-xl box-glow-primary" />
 
-													<img
-														src={partner.logo}
-														alt={partner.name}
-														className="max-h-full max-w-full object-contain grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300 filter relative z-10"
-													/>
-												</div>
+												<img
+													src={partner.logo}
+													alt={partner.name}
+													className="max-h-full max-w-full object-contain grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300 filter relative z-10"
+												/>
+											</div>
 											</Tilt>
 										</div>
 									),
@@ -555,10 +638,10 @@ const Index = () => {
 			<section className="relative py-20 px-4">
 				<div className="max-w-7xl mx-auto">
 					<motion.div
-						initial={{ opacity: 0, y: 20 }}
-						whileInView={{ opacity: 1, y: 0 }}
-						viewport={{ once: true }}
-						transition={{ duration: 0.6 }}
+				initial={{ opacity: 0 }}
+				whileInView={{ opacity: 1 }}
+				viewport={{ once: true }}
+				transition={{ duration: 0.6 }}
 						className="mb-12"
 					>
 						<span className="text-primary font-mono text-sm glow-primary">
@@ -637,7 +720,7 @@ const Index = () => {
 										<div className="flex gap-3">
 											<Button
 												size="sm"
-												className="flex-1 bg-primary text-primary-foreground hover:bg-primary/90 glow-primary"
+												className="flex-1 bg-primary text-primary-foreground hover:bg-primary/90 glow-primary rounded-full"
 												asChild
 											>
 												<a
@@ -652,7 +735,7 @@ const Index = () => {
 											<Button
 												size="sm"
 												variant="outline"
-												className="border-primary/30 text-primary hover:bg-primary/10"
+												className="border-primary/30 text-primary hover:bg-primary/10 rounded-full"
 												asChild
 											>
 												<a
@@ -675,8 +758,44 @@ const Index = () => {
 			{/* Budget Estimator */}
 			{/* <BudgetEstimator /> */}
 
+			{/* Wizard Connector Section */}
+			<section className="relative py-20 px-4">
+				<div className="max-w-4xl mx-auto">
+					<motion.div
+						initial={{ opacity: 0, y: 20 }}
+						whileInView={{ opacity: 1, y: 0 }}
+						viewport={{ once: true }}
+						transition={{ duration: 0.6 }}
+					>
+						<Card className="relative overflow-hidden p-8 md:p-12 bg-card/10 backdrop-blur-md border-primary/20 box-glow-primary text-center group">
+							{/* Decorative background elements */}
+							<div className="absolute inset-0 bg-linear-to-b from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+							
+							<h2 className="relative z-10 text-3xl md:text-4xl font-bold mb-4">
+								Ready to <span className="text-primary glow-primary">Compile</span> Your Vision?
+							</h2>
+							<p className="relative z-10 text-muted-foreground mb-8 max-w-2xl mx-auto text-lg">
+								Launch the project wizard to define your requirements and generate a preliminary estimate.
+							</p>
+							
+							<div className="relative z-10">
+								<Button
+									size="lg"
+									className="bg-primary text-primary-foreground hover:bg-primary/90 glow-primary rounded-full text-lg px-8 py-6"
+									asChild
+								>
+									<Link to="/wizard">
+										Initialize Project <ArrowRight className="ml-2 w-5 h-5" />
+									</Link>
+								</Button>
+							</div>
+						</Card>
+					</motion.div>
+				</div>
+			</section>
+
 			{/* Contact Section */}
-			<section id="contact" className="relative py-20 px-4">
+			{/* <section id="contact" className="relative py-20 px-4">
 				<div className="max-w-4xl mx-auto">
 					<motion.div
 						initial={{ opacity: 0, y: 20 }}
@@ -700,7 +819,7 @@ const Index = () => {
 						</div>
 
 						<Card className="p-6 md:p-8 bg-card/50 backdrop-blur-xs border-primary/20 box-glow-primary">
-							<form onSubmit={handleSubmit} className="space-y-6">
+							<form onSubmit={handleSubmit} className="space-y-6 rounded-md">
 								<div className="grid md:grid-cols-2 gap-4">
 									<div>
 										<label
@@ -768,7 +887,7 @@ const Index = () => {
 										htmlFor="problem"
 										className="block text-sm font-mono mb-2 text-foreground"
 									>
-										{">"} What do you need in details?
+											{">"} What do you need in details?
 									</label>
 									<Textarea
 										id="problem"
@@ -785,7 +904,7 @@ const Index = () => {
 
 								<Button
 									type="submit"
-									className="w-full bg-primary text-primary-foreground hover:bg-primary/90 glow-primary"
+									className="w-full bg-primary text-primary-foreground hover:bg-primary/90 glow-primary rounded-full"
 								>
 									Send via WhatsApp
 								</Button>
@@ -793,7 +912,7 @@ const Index = () => {
 						</Card>
 					</motion.div>
 				</div>
-			</section>
+			</section> */}
 
 			{/* Footer */}
 			<footer className="relative border-t border-border/50 bg-muted/20 py-8 px-4">
@@ -807,22 +926,15 @@ const Index = () => {
 								Architects of the Digital Future
 							</p>
 						</div>
-
-						<div className="flex items-center gap-6 text-sm text-muted-foreground font-mono">
-							<a href="#" className="hover:text-primary transition-colors">
-								<Github className="w-5 h-5" />
-							</a>
-							<a href="#" className="hover:text-primary transition-colors">
-								<Linkedin className="w-5 h-5" />
-							</a>
-							<a href="#" className="hover:text-primary transition-colors">
-								<Instagram className="w-5 h-5" />
-							</a>
-						</div>
 					</div>
 
-					<div className="mt-6 pt-6 border-t border-border/30 text-center text-xs text-muted-foreground font-mono">
+					<div className="mt-6 pt-6 border-t border-border/30 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-muted-foreground font-mono">
 						<p>© 2025 Extend IT. All rights reserved. | Version 0.0.1</p>
+						<div className="flex gap-4">
+							<Link to="/faq" className="hover:text-primary transition-colors">FAQ</Link>
+							<Link to="/terms" className="hover:text-primary transition-colors">Terms</Link>
+							<Link to="/privacy" className="hover:text-primary transition-colors">Privacy</Link>
+						</div>
 					</div>
 				</div>
 			</footer>

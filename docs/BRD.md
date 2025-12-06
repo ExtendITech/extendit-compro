@@ -26,25 +26,37 @@ The website content, SEO strategy, and user experience must be tailored for the 
 - **Language**: Primary content in English (Professional), but SEO keywords must target Indonesian search terms (e.g., "Jasa Pembuatan Website", "Software House Jakarta/Bandung").
 - **Localization**: Address formats, phone numbers (+62), and currency (IDR) where applicable.
 
-### 3.2 Service Packages
+### 3.2 Service Packages & Pricing Strategy
 
-The website must explicitly display the following core service pillars:
+The website must explicitly display three distinct service tiers to guide potential clients:
 
-| Package | Name                  | Description                                                       |
-| :------ | :-------------------- | :---------------------------------------------------------------- |
-| **1**   | **Web Static**        | Ideal for landing pages, portfolios, and simple company profiles. |
-| **2**   | **Web Dynamic + CMS** | Includes Strapi CMS for content updates.                          |
-| **3**   | **Company Starter**   | Comprehensive solutions including Finance and HR systems.         |
-| **4**   | **AI Solution**       | Custom AI implementations (Requires detailed consultation).       |
+| Package | Name                 | Price (IDR) | Delivery Time | Description                                                                              |
+| :------ | :------------------- | :---------- | :------------ | :--------------------------------------------------------------------------------------- |
+| **A**   | **Static Website**   | 3,000,000   | 3-5 Days      | Ideal for landing pages, portfolios, and simple company profiles. No backend required.   |
+| **B**   | **Website + Admin**  | 6,000,000   | 7-9 Days      | Includes a Content Management System (CMS) or Admin Dashboard for content updates.       |
+| **C**   | **Dynamic / Custom** | Custom      | Discuss       | For complex requirements, SaaS, or unique business logic. Triggers the "Contact Wizard". |
 
-### 3.3 Budget Estimator (Internal/Hidden)
+### 3.3 Interactive Contact Wizard
 
-The Budget Estimator feature is valuable but not yet ready for public release. It should be preserved in the codebase but hidden from the public interface until further notice.
+The previous "Budget Estimator" is replaced by a gamified **Contact Wizard** located on a dedicated page (`/wizard`). This wizard serves as the primary lead generation tool for custom projects and "Package C" inquiries.
 
-- **Requirement**: Hide the menu item and access to the estimator page via feature flags.
-- **Purpose**: To be used internally by the sales team or enabled later for lead generation.
+**Wizard Steps:**
 
-### 3.4 Local SEO (Indonesia)
+1.  **Identity Verification**: User selects their role (Startup Founder, SME Owner, Enterprise Manager, Personal Brand).
+2.  **Mission Objective**: User selects the project type (Website, App, AI Transformation, Digital Marketing).
+3.  **AI Integration Module (AIO)**: User chooses whether to enable "AI Optimization" (AIO) for their project (Yes/No).
+4.  **System Parameters**: User inputs Estimated Budget and Timeline Expectation.
+5.  **Establish Connection**: User provides Name, WhatsApp, and Email to submit the request.
+
+### 3.4 Legal & Support Infrastructure
+
+To ensure compliance and build trust, the following pages must be implemented:
+
+- **FAQ (`/faq`)**: Common questions about services, pricing, and processes.
+- **Terms & Conditions (`/terms`)**: Standard legal terms for service engagement.
+- **Privacy Policy (`/privacy`)**: Data handling policy, especially important for the "Contact Wizard" data collection.
+
+### 3.5 Local SEO (Indonesia)
 
 To dominate the local market, the website must be optimized for local search intent.
 
